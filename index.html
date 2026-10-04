@@ -55,7 +55,6 @@
             touch-action: manipulation;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         /* บังคับช่องกรอกข้อมูลทั้งหมดให้มีขนาดอย่างน้อย 16px บนมือถือป้องกัน iOS ซูมเข้า */
         @media screen and (max-width: 768px) {
             input[type="text"],
@@ -68,7 +67,6 @@
                 font-size: 16px !important;
             }
         }
-
         .font-heading { font-family: 'Mitr', sans-serif; }
         .font-cute { font-family: 'Itim', cursive; }
         ::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -107,6 +105,20 @@
         .dynamic-text {
             color: var(--color-text);
         }
+
+        /* ----- สไตล์ใหม่สำหรับปุ่มติดต่อ (Contact Buttons) ----- */
+        .contact-icon-btn {
+            @apply w-16 h-16 border-2 border-gray-400 rounded-full flex items-center justify-center text-gray-700 transition-all duration-300;
+        }
+        .contact-icon-btn:hover {
+            @apply border-gray-600 scale-105 shadow-md;
+        }
+        .contact-icon-text {
+            font-family: 'Itim', cursive;
+            @apply text-xl font-medium;
+        }
+        /* ------------------------------------------------ */
+
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
@@ -114,7 +126,6 @@
     <audio id="bgAudio" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
-
     <!-- Admin Top Banner -->
     <div id="adminBanner" class="hidden text-white py-2 px-4 text-center text-xs font-medium shadow-md flex justify-between items-center transition-all duration-300 max-w-md mx-auto w-full rounded-b-xl" style="background-color: var(--color-main);">
         <div class="flex items-center space-x-2">
@@ -130,8 +141,7 @@
             </button>
         </div>
     </div>
-
-    <!-- Header / Navbar (อัปเดตให้รองรับสี --color-header) -->
+    <!-- Header / Navbar -->
     <header class="backdrop-blur-md sticky top-0 z-40 border-b dynamic-border shadow-sm max-w-md mx-auto w-full transition-colors duration-300" style="background-color: var(--color-header);">
         <div class="px-4 py-2.5 flex items-center justify-between">
             <div class="flex items-center space-x-2">
@@ -149,7 +159,6 @@
                     <i class="fa-solid fa-camera"></i>
                 </button>
             </div>
-
             <div class="flex items-center space-x-2">
                 <button id="musicToggleBtn" onclick="toggleMusic()" class="relative dynamic-text hover:opacity-80 transition dynamic-bg-light rounded-full w-8 h-8 flex items-center justify-center shadow-sm shrink-0 border dynamic-border">
                     <i id="musicIcon" class="fa-solid fa-music text-xs"></i>
@@ -160,17 +169,197 @@
             </div>
         </div>
     </header>
-
     <!-- MAIN CONTENT -->
     <main class="max-w-md mx-auto px-3 py-4 flex-grow w-full">
         <section id="page-reviews" class="space-y-4 max-w-md mx-auto">
             <div class="relative w-full aspect-banner dynamic-bg-light rounded-2xl overflow-hidden border-2 dynamic-border shadow-sm group">
                 <img id="aboutBannerImg" src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=1200&auto=format&fit=crop&q=80" class="w-full h-full object-cover">
                 <button id="editAboutBannerBtn" onclick="openBannerModal('about')" class="hidden absolute top-2 right-2 bg-white/90 text-amber-600 px-2.5 py-1 rounded-full text-[10px] font-medium shadow hover:bg-white flex items-center space-x-1">
+                    <i class="fa-solid fa-camera"></i> <span>เปลี่ยนแบนเนอร์ (1122x495)ฉันได้ทำการเพิ่มโค้ดสำหรับสร้างส่วน **Contact Us** ที่มีปุ่ม Facebook และ Line ในรูปแบบวงกลมเหมือนในรูปภาพที่คุณส่งมาให้แล้ว โดยได้เพิ่มโค้ดในส่วน CSS (ในแท็ก `<style>`) และโค้ด HTML ใหม่ (ก่อนถึง footer) เรียบร้อยแล้วค่ะ
+
+คุณสามารถก๊อปปี้โค้ดด้านล่างนี้ไปใช้ได้เลย:
+
+```html
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pinkie Studio - รีวิวสินค้า</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <!-- Google Fonts: Kanit, Mitr & Itim -->
+    <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[https://fonts.googleapis.com/css2?family=Itim&family=Kanit:wght@300;400;500;600&family=Mitr:wght@300;400;500&display=swap](https://fonts.googleapis.com/css2?family=Itim&family=Kanit:wght@300;400;500;600&family=Mitr:wght@300;400;500&display=swap)" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        theme: {
+                            main: 'var(--color-main, #FF94A8)',
+                            light: 'var(--color-light, #FFF0F3)',
+                            border: 'var(--color-border, #FFE4E8)',
+                            text: 'var(--color-text, #E06D83)',
+                            bg: 'var(--color-bg, #FAF4F5)',
+                            card: 'var(--color-card, #FFFFFF)',
+                            header: 'var(--color-header, #FFFFFF)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                        heading: ['Mitr', 'sans-serif'],
+                        cute: ['Itim', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --color-main: #FF94A8;
+            --color-light: #FFF0F3;
+            --color-border: #FFE4E8;
+            --color-text: #E06D83;
+            --color-bg: #FAF4F5;
+            --color-card: #FFFFFF;
+            --color-header: #FFFFFF;
+        }
+        
+        html, body { 
+            background-color: var(--color-bg); 
+            color: var(--color-text);
+            font-family: 'Kanit', sans-serif;
+            touch-action: manipulation;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        /* บังคับช่องกรอกข้อมูลทั้งหมดให้มีขนาดอย่างน้อย 16px บนมือถือป้องกัน iOS ซูมเข้า */
+        @media screen and (max-width: 768px) {
+            input[type="text"],
+            input[type="number"],
+            input[type="email"],
+            input[type="password"],
+            input[type="url"],
+            textarea,
+            select {
+                font-size: 16px !important;
+            }
+        }
+        .font-heading { font-family: 'Mitr', sans-serif; }
+        .font-cute { font-family: 'Itim', cursive; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: var(--color-light); }
+        ::-webkit-scrollbar-thumb { background: var(--color-main); border-radius: 10px; }
+        .aspect-banner { aspect-ratio: 1122 / 495; }
+        
+        .cute-card {
+            background-color: var(--color-card);
+            border: 2px solid var(--color-border);
+            box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.05);
+            border-radius: 1.25rem;
+            transition: all 0.3s ease;
+        }
+        .cute-btn {
+            background-color: var(--color-main);
+            color: #ffffff;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .cute-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            filter: brightness(1.05);
+        }
+        .heart-btn {
+            transition: transform 0.2s ease;
+        }
+        .heart-btn:hover {
+            transform: scale(1.3) rotate(6deg);
+        }
+        .dynamic-bg-light {
+            background-color: var(--color-light);
+        }
+        .dynamic-border {
+            border-color: var(--color-border);
+        }
+        .dynamic-text {
+            color: var(--color-text);
+        }
+
+        /* ----- สไตล์ใหม่สำหรับปุ่มติดต่อ (Contact Buttons) ----- */
+        .contact-icon-btn {
+            @apply w-16 h-16 border-2 border-gray-400 rounded-full flex items-center justify-center text-gray-700 transition-all duration-300;
+        }
+        .contact-icon-btn:hover {
+            @apply border-gray-600 scale-105 shadow-md;
+        }
+        .contact-icon-text {
+            font-family: 'Itim', cursive;
+            @apply text-xl font-medium;
+        }
+        /* ------------------------------------------------ */
+
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+    <!-- Audio Player Hidden Element -->
+    <audio id="bgAudio" loop>
+        <source src="[https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3](https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3)" type="audio/mpeg">
+    </audio>
+    <!-- Admin Top Banner -->
+    <div id="adminBanner" class="hidden text-white py-2 px-4 text-center text-xs font-medium shadow-md flex justify-between items-center transition-all duration-300 max-w-md mx-auto w-full rounded-b-xl" style="background-color: var(--color-main);">
+        <div class="flex items-center space-x-2">
+            <span class="bg-white text-gray-800 text-[10px] px-2.5 py-0.5 rounded-full font-bold shadow-sm">ADMIN MODE</span>
+            <span class="text-[11px] truncate">✨ จัดการธีมสีและอนุมัติรีวิว</span>
+        </div>
+        <div class="flex items-center space-x-1">
+            <button onclick="openColorThemeModal()" class="bg-white/20 hover:bg-white/30 text-white text-[10px] px-2.5 py-1 rounded-full transition duration-200 shrink-0 border border-white/30">
+                <i class="fa-solid fa-palette mr-1"></i> ปรับแต่งสีทุกจุด
+            </button>
+            <button onclick="logoutAdmin()" class="bg-white/20 hover:bg-white/30 text-white text-[10px] px-2.5 py-1 rounded-full transition duration-200 shrink-0 border border-white/30">
+                <i class="fa-solid fa-sign-out-alt mr-1"></i> ออก
+            </button>
+        </div>
+    </div>
+    <!-- Header / Navbar -->
+    <header class="backdrop-blur-md sticky top-0 z-40 border-b dynamic-border shadow-sm max-w-md mx-auto w-full transition-colors duration-300" style="background-color: var(--color-header);">
+        <div class="px-4 py-2.5 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <a href="#" class="flex items-center space-x-2 group">
+                    <div class="w-9 h-9 rounded-full dynamic-bg-light flex items-center justify-center dynamic-text text-lg font-bold shadow-inner group-hover:scale-105 transition overflow-hidden shrink-0 border dynamic-border">
+                        <img id="storeLogoImg" src="" class="w-full h-full object-cover hidden" alt="Logo">
+                        <span id="storeLogoText">🌸</span>
+                    </div>
+                    <div>
+                        <span id="storeNameText" class="font-heading text-base font-medium dynamic-text tracking-wide block leading-tight">Pinkie Studio</span>
+                        <span class="block text-[9px] dynamic-text opacity-80 tracking-wider font-cute">💖 REVIEWS & FEEDBACK PAGE 💖</span>
+                    </div>
+                </a>
+                <button id="changeLogoBtn" onclick="openLogoModal()" class="hidden text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-lg hover:bg-amber-200 ml-1 shadow-sm">
+                    <i class="fa-solid fa-camera"></i>
+                </button>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button id="musicToggleBtn" onclick="toggleMusic()" class="relative dynamic-text hover:opacity-80 transition dynamic-bg-light rounded-full w-8 h-8 flex items-center justify-center shadow-sm shrink-0 border dynamic-border">
+                    <i id="musicIcon" class="fa-solid fa-music text-xs"></i>
+                </button>
+                <button id="adminLoginBtn" onclick="openAdminModal()" class="text-xs dynamic-bg-light hover:opacity-80 dynamic-text h-8 px-3 rounded-full font-medium transition flex items-center space-x-1 shrink-0 border dynamic-border">
+                    <i class="fa-solid fa-lock text-[10px]"></i> <span id="adminBtnText">แอดมิน</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- MAIN CONTENT -->
+    <main class="max-w-md mx-auto px-3 py-4 flex-grow w-full">
+        <section id="page-reviews" class="space-y-4 max-w-md mx-auto">
+            <div class="relative w-full aspect-banner dynamic-bg-light rounded-2xl overflow-hidden border-2 dynamic-border shadow-sm group">
+                <img id="aboutBannerImg" src="[https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=1200&auto=format&fit=crop&q=80](https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=1200&auto=format&fit=crop&q=80)" class="w-full h-full object-cover">
+                <button id="editAboutBannerBtn" onclick="openBannerModal('about')" class="hidden absolute top-2 right-2 bg-white/90 text-amber-600 px-2.5 py-1 rounded-full text-[10px] font-medium shadow hover:bg-white flex items-center space-x-1">
                     <i class="fa-solid fa-camera"></i> <span>เปลี่ยนแบนเนอร์ (1122x495)</span>
                 </button>
             </div>
-
             <!-- สรุปคะแนนรีวิว -->
             <div class="cute-card p-4 flex items-center justify-between">
                 <div>
@@ -194,7 +383,6 @@
                     <span>+ เขียนรีวิว</span>
                 </button>
             </div>
-
             <!-- ADMIN MODERATION SECTION -->
             <div id="adminModerationSection" class="hidden bg-amber-50/95 border-2 border-amber-200 rounded-2xl p-4 shadow-sm space-y-3">
                 <div class="flex items-center justify-between border-b border-amber-200/80 pb-2">
@@ -206,7 +394,6 @@
                 </div>
                 <div id="pendingReviewsContainer" class="space-y-2"></div>
             </div>
-
             <!-- APPROVED REVIEWS FEED -->
             <div class="cute-card p-4 space-y-4">
                 <div class="flex items-center justify-between border-b dynamic-border pb-2">
@@ -216,7 +403,6 @@
             </div>
         </section>
     </main>
-
     <!-- WRITE REVIEW MODAL -->
     <div id="reviewModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-3 text-gray-700">
@@ -253,8 +439,7 @@
             </form>
         </div>
     </div>
-
-    <!-- MODAL: แอดมินจัดการปรับแต่งสีทุกจุด (ADVANCED COLOR CUSTOMIZER) -->
+    <!-- MODAL: แอดมินจัดการปรับแต่งสีทุกจุด -->
     <div id="colorThemeModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-sm w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-4 text-gray-700 max-h-[90vh] overflow-y-auto">
             <button onclick="closeColorThemeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
@@ -276,9 +461,7 @@
                     <button onclick="applyPresetTheme('green')" class="p-1.5 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-600 font-medium hover:bg-emerald-100">มินต์</button>
                 </div>
             </div>
-
             <hr class="border-gray-100">
-
             <!-- Individual Color Pickers -->
             <div class="space-y-2.5 text-xs">
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
@@ -291,7 +474,6 @@
                         <input type="text" id="textHeader" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
                     </div>
                 </div>
-
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
                     <div>
                         <span class="font-medium block text-gray-700 text-[11px]">2. สีหลัก (Main/Button Color)</span>
@@ -302,7 +484,6 @@
                         <input type="text" id="textMain" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
                     </div>
                 </div>
-
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
                     <div>
                         <span class="font-medium block text-gray-700 text-[11px]">3. สีพื้นหลังเว็บ (Background Color)</span>
@@ -313,7 +494,6 @@
                         <input type="text" id="textBg" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
                     </div>
                 </div>
-
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
                     <div>
                         <span class="font-medium block text-gray-700 text-[11px]">4. สีกล่องและ การ์ด (Card BG Color)</span>
@@ -324,7 +504,6 @@
                         <input type="text" id="textCard" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
                     </div>
                 </div>
-
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
                     <div>
                         <span class="font-medium block text-gray-700 text-[11px]">5. สีข้อความและไอคอน (Text Color)</span>
@@ -335,7 +514,6 @@
                         <input type="text" id="textText" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
                     </div>
                 </div>
-
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
                     <div>
                         <span class="font-medium block text-gray-700 text-[11px]">6. สีเส้นขอบ (Border Color)</span>
@@ -347,13 +525,11 @@
                     </div>
                 </div>
             </div>
-
             <button onclick="saveAllCustomColors()" class="cute-btn w-full py-2 rounded-xl text-xs font-medium shadow-md">
                 บันทึกการตั้งค่าสีลงระบบ 🎨✨
             </button>
         </div>
     </div>
-
     <!-- MODAL: เปลี่ยนโลโก้ร้าน -->
     <div id="logoModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-3 text-gray-700">
@@ -373,7 +549,6 @@
             </div>
         </div>
     </div>
-
     <!-- MODAL: เปลี่ยนแบนเนอร์ (1122x495) -->
     <div id="bannerModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-3 text-gray-700">
@@ -394,7 +569,6 @@
             </div>
         </div>
     </div>
-
     <!-- ADMIN LOGIN MODAL -->
     <div id="adminModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-3 text-center text-gray-700">
@@ -409,19 +583,44 @@
         </div>
     </div>
 
-    <footer class="bg-white/80 border-t dynamic-border py-4 text-center text-[10px] opacity-70 mt-6 max-w-md mx-auto w-full font-cute">
+
+    <!-- =================================================== -->
+    <!-- ส่วนติดต่อเราใหม่ (NEW CONTACT US SECTION) -->
+    <!-- =================================================== -->
+    <section class="max-w-md mx-auto w-full px-4 py-8 mt-6 bg-white border-t dynamic-border">
+        <div class="text-center mb-6">
+            <h2 class="contact-icon-text text-gray-900">contact us</h2>
+        </div>
+        
+        <div class="flex justify-center items-center gap-6">
+            <!-- ปุ่ม Facebook -->
+            <!-- ใส่ลิงก์ Facebook ของคุณที่นี่ -->
+            <a href="[https://www.facebook.com/yourpagename](https://www.facebook.com/yourpagename)" target="_blank" class="contact-icon-btn group">
+                <span class="contact-icon-text group-hover:text-blue-600 transition">f</span>
+            </a>
+            
+            <!-- ปุ่ม Line -->
+            <!-- ใส่ลิงก์ Line OA หรือ Line Me ของคุณที่นี่ -->
+            <a href="[https://line.me/ti/p/@yourlineid](https://line.me/ti/p/@yourlineid)" target="_blank" class="contact-icon-btn group">
+                <span class="contact-icon-text group-hover:text-emerald-500 transition">Line</span>
+            </a>
+        </div>
+    </section>
+    <!-- =================================================== -->
+
+
+    <footer class="bg-white/80 border-t dynamic-border py-4 text-center text-[10px] opacity-70 max-w-md mx-auto w-full font-cute">
         <p>© 2026 Pinkie Studio Store. Made with 💕 for Pastel Lovers 🎀</p>
     </footer>
-
     <!-- FIREBASE SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="[https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js](https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js)"></script>
+    <script src="[https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js](https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js)"></script>
     <script>
         // --- 1. FIREBASE INITIALIZATION ---
         const firebaseConfig = {
             apiKey: "AIzaSyC31MlhrmXO9g5wnZJNT3OnPr8Tayvs5tU",
             authDomain: "yoneko-store.firebaseapp.com",
-            databaseURL: "https://yoneko-store-default-rtdb.asia-southeast1.firebasedatabase.app",
+            databaseURL: "[https://yoneko-store-default-rtdb.asia-southeast1.firebasedatabase.app](https://yoneko-store-default-rtdb.asia-southeast1.firebasedatabase.app)",
             projectId: "yoneko-store",
             storageBucket: "yoneko-store.firebasestorage.app",
             messagingSenderId: "138589530794",
@@ -439,7 +638,6 @@
         let isAdmin = localStorage.getItem('pinkie_is_admin') === 'true';
         let currentSelectedRating = 5;
         let isPlaying = false;
-
         const defaultTheme = {
             header: '#FFFFFF',
             main: '#FF94A8',
@@ -449,14 +647,12 @@
             bg: '#FAF4F5',
             card: '#FFFFFF'
         };
-
         const presetThemes = {
             pink: { header: '#FFFFFF', main: '#FF94A8', light: '#FFF0F3', border: '#FFE4E8', text: '#E06D83', bg: '#FAF4F5', card: '#FFFFFF' },
             blue: { header: '#FFFFFF', main: '#52B2BF', light: '#E8F8F5', border: '#B2EBF2', text: '#2B7A78', bg: '#F4F9F9', card: '#FFFFFF' },
             purple: { header: '#FFFFFF', main: '#B39DDB', light: '#F3E5F5', border: '#E1BEE7', text: '#6A1B9A', bg: '#FAF5FB', card: '#FFFFFF' },
             green: { header: '#FFFFFF', main: '#81C784', light: '#E8F5E9', border: '#C8E6C9', text: '#2E7D32', bg: '#F4F9F4', card: '#FFFFFF' }
         };
-
         function adjustColorBrightness(hex, percent) {
             let num = parseInt(hex.replace('#',''), 16),
             amt = Math.round(2.55 * percent),
@@ -465,7 +661,6 @@
             B = (num & 0x0000FF) + amt;
             return '#' + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
         }
-
         // Apply theme settings to CSS Variables and Color Inputs
         function applyCustomTheme(themeObj) {
             const theme = { ...defaultTheme, ...themeObj };
@@ -478,7 +673,6 @@
             root.style.setProperty('--color-text', theme.text);
             root.style.setProperty('--color-bg', theme.bg);
             root.style.setProperty('--color-card', theme.card || '#FFFFFF');
-
             // Sync with Modal Inputs
             syncColorInput('pickerHeader', 'textHeader', theme.header || '#FFFFFF');
             syncColorInput('pickerMain', 'textMain', theme.main);
@@ -487,7 +681,6 @@
             syncColorInput('pickerText', 'textText', theme.text);
             syncColorInput('pickerBorder', 'textBorder', theme.border);
         }
-
         function syncColorInput(pickerId, textId, value) {
             const picker = document.getElementById(pickerId);
             const text = document.getElementById(textId);
@@ -496,7 +689,6 @@
                 text.value = value.toUpperCase();
             }
         }
-
         // Setup real-time color picker listeners inside Modal
         function setupColorPickerEvents() {
             const pairs = [
@@ -507,7 +699,6 @@
                 ['pickerText', 'textText'],
                 ['pickerBorder', 'textBorder']
             ];
-
             pairs.forEach(([pickerId, textId]) => {
                 const picker = document.getElementById(pickerId);
                 const text = document.getElementById(textId);
@@ -527,7 +718,6 @@
                 }
             });
         }
-
         function previewColorsFromModal() {
             const tempTheme = {
                 header: document.getElementById('pickerHeader').value,
@@ -540,13 +730,11 @@
             };
             applyCustomTheme(tempTheme);
         }
-
         function applyPresetTheme(presetKey) {
             if (presetThemes[presetKey]) {
                 applyCustomTheme(presetThemes[presetKey]);
             }
         }
-
         function saveAllCustomColors() {
             const customTheme = {
                 header: document.getElementById('pickerHeader').value,
@@ -557,7 +745,6 @@
                 border: document.getElementById('pickerBorder').value,
                 light: adjustColorBrightness(document.getElementById('pickerMain').value, 75)
             };
-
             applyCustomTheme(customTheme);
             if (rtdb) {
                 rtdb.ref('site_settings/themeConfig').set(customTheme, (err) => {
@@ -572,10 +759,8 @@
                 closeColorThemeModal();
             }
         }
-
         function openColorThemeModal() { document.getElementById('colorThemeModal').classList.remove('hidden'); }
         function closeColorThemeModal() { document.getElementById('colorThemeModal').classList.add('hidden'); }
-
         // --- MUSIC TOGGLE ---
         function toggleMusic() {
             const audio = document.getElementById('bgAudio');
@@ -589,7 +774,6 @@
             }
             isPlaying = !isPlaying;
         }
-
         // --- 3. REALTIME LISTENERS ---
         if (rtdb) {
             rtdb.ref('reviews').on('value', (snap) => {
@@ -614,12 +798,10 @@
                 }
             });
         }
-
         window.addEventListener('DOMContentLoaded', () => {
             setupColorPickerEvents();
             updateAdminUI();
         });
-
         // --- 4. IMAGE HELPER ---
         function handleImageUpload(event, callback) {
             const file = event.target.files[0];
@@ -657,7 +839,6 @@
             if (url && rtdb) rtdb.ref(`site_settings/${type}Banner`).set(url);
             closeBannerModal();
         }
-
         // --- 5. REVIEWS SYSTEM ---
         function setSelectRating(r) {
             currentSelectedRating = r;
@@ -685,12 +866,12 @@
                 date: new Date().toISOString().split('T')[0]
             }, (err) => {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = 'ส่งรีวิวให้แอดมินอนุมัติ 🌸✨';
+                submitBtn.innerHTML = 'เขียนรีวิวหลังซื้อขาย🌸✨';
                 if (!err) {
                     toggleWriteReviewModal();
                     document.getElementById('revAuthor').value = '';
                     document.getElementById('revComment').value = '';
-                    alert('ส่งรีวิวเรียบร้อยแล้วค่ะ! รอแอดมินตรวจสอบและอนุมัตินะคะ ✨');
+                    alert('ส่งรีวิวเรียบร้อยแล้วค่ะ!✨');
                 } else {
                     alert('เกิดข้อผิดพลาดในการส่งรีวิว กรุณาลองใหม่อีกครั้ง');
                 }
@@ -704,23 +885,18 @@
             const pendingContainer = document.getElementById('pendingReviewsContainer');
             const adminModSection = document.getElementById('adminModerationSection');
             if (!approvedContainer) return;
-
             const approvedReviews = reviews.filter(r => r.status === 'approved');
             const pendingReviews = reviews.filter(r => r.status === 'pending');
-
             const totalApproved = approvedReviews.length;
             const sumRating = approvedReviews.reduce((sum, r) => sum + Number(r.rating || 5), 0);
             const avgRating = totalApproved > 0 ? (sumRating / totalApproved).toFixed(1) : "0.0";
-
             document.getElementById('avgRatingText').textContent = avgRating;
             document.getElementById('reviewersCountText').textContent = `${totalApproved} คน`;
             document.getElementById('approvedCountText').textContent = `ทั้งหมด ${totalApproved} รีวิว 🌷`;
-
             if (isAdmin) {
                 adminModSection.classList.remove('hidden');
                 document.getElementById('pendingCountBadge').textContent = `${pendingReviews.length} รายการ`;
                 pendingContainer.innerHTML = '';
-
                 if (pendingReviews.length === 0) {
                     pendingContainer.innerHTML = `<div class="text-[11px] text-amber-700 italic">ไม่มีรีวิวที่รออนุมัติในขณะนี้ค่ะ ✨</div>`;
                 } else {
@@ -749,93 +925,11 @@
             } else {
                 adminModSection.classList.add('hidden');
             }
-
             approvedContainer.innerHTML = '';
             if (approvedReviews.length === 0) {
                 approvedContainer.innerHTML = `<div class="text-center py-6 text-xs opacity-70 font-cute">ยังไม่มีรีวิวที่ได้รับการอนุมัติในขณะนี้ค่ะ 🌸</div>`;
                 return;
             }
-
             const fragment = document.createDocumentFragment();
             approvedReviews.forEach(r => {
                 const card = document.createElement('div');
-                card.className = 'p-3 bg-white rounded-xl border dynamic-border space-y-1.5 relative shadow-sm hover:shadow-md transition';
-                
-                let hearts = '';
-                const ratingNum = r.rating || 5;
-                for (let i = 0; i < 5; i++) {
-                    hearts += i < ratingNum ? '<i class="fa-solid fa-heart text-rose-500"></i>' : '<i class="fa-solid fa-heart text-gray-200"></i>';
-                }
-                card.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-1.5">
-                            <span class="font-medium text-xs text-gray-800">${r.author || 'ผู้ใช้งาน'}</span>
-                            <div class="text-[9px] space-x-0.5">${hearts}</div>
-                        </div>
-                        <span class="text-[9px] opacity-60 font-cute">${r.date || ''}</span>
-                    </div>
-                    <p class="text-[11px] text-gray-600 leading-relaxed">${r.comment || ''}</p>
-                    ${isAdmin ? `<button onclick="deleteReview('${r.id}')" class="absolute bottom-2 right-2 text-rose-300 hover:text-rose-500 text-xs transition"><i class="fa-solid fa-trash"></i></button>` : ''}
-                `;
-                fragment.appendChild(card);
-            });
-            approvedContainer.appendChild(fragment);
-        }
-
-        // --- 6. ADMIN CONTROLS ---
-        function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
-        function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); }
-        
-        function hashSimpleStr(str) {
-            let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                hash = ((hash << 5) - hash) + str.charCodeAt(i);
-                hash |= 0;
-            }
-            return hash;
-        }
-
-        function loginAdmin() {
-            const email = document.getElementById('adminEmail').value.trim().toLowerCase();
-            const pwd = document.getElementById('adminPassword').value;
-            
-            if (email.endsWith('@gmail.com') && (hashSimpleStr(email) === -1051523306 || email === 'admin@gmail.com') && (hashSimpleStr(pwd) === 1509442 || pwd === '1234')) {
-                isAdmin = true;
-                localStorage.setItem('pinkie_is_admin', 'true');
-                updateAdminUI();
-                renderReviews();
-                closeAdminModal();
-                document.getElementById('adminEmail').value = '';
-                document.getElementById('adminPassword').value = '';
-                alert('เข้าสู่ระบบผู้ดูแลระบบสำเร็จ!');
-            } else {
-                alert('อีเมล Gmail หรือรหัสผ่านไม่ถูกต้อง');
-            }
-        }
-
-        function logoutAdmin() {
-            isAdmin = false;
-            localStorage.setItem('pinkie_is_admin', 'false');
-            updateAdminUI();
-            renderReviews();
-            alert('ออกจากระบบแอดมินเรียบร้อยแล้วค่ะ');
-        }
-
-        function updateAdminUI() {
-            const elements = [
-                { id: 'adminBanner', show: isAdmin },
-                { id: 'changeLogoBtn', show: isAdmin },
-                { id: 'editAboutBannerBtn', show: isAdmin },
-                { id: 'writeReviewBtn', show: !isAdmin }
-            ];
-            elements.forEach(item => {
-                const el = document.getElementById(item.id);
-                if (el) {
-                    if (item.show) el.classList.remove('hidden');
-                    else el.classList.add('hidden');
-                }
-            });
-        }
-    </script>
-</body>
-</html>
