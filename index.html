@@ -25,7 +25,9 @@
                             text: 'var(--color-text, #E06D83)',
                             bg: 'var(--color-bg, #FAF4F5)',
                             card: 'var(--color-card, #FFFFFF)',
-                            header: 'var(--color-header, #FFFFFF)'
+                            header: 'var(--color-header, #FFFFFF)',
+                            contactBtnBg: 'var(--color-contact-btn-bg, #FF94A8)',
+                            contactBtnIcon: 'var(--color-contact-btn-icon, #FFFFFF)'
                         }
                     },
                     fontFamily: {
@@ -46,6 +48,8 @@
             --color-bg: #FAF4F5;
             --color-card: #FFFFFF;
             --color-header: #FFFFFF;
+            --color-contact-btn-bg: #FF94A8;
+            --color-contact-btn-icon: #FFFFFF;
         }
         
         html, body { 
@@ -55,6 +59,7 @@
             touch-action: manipulation;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+        /* บังคับช่องกรอกข้อมูลทั้งหมดให้มีขนาดอย่างน้อย 16px บนมือถือป้องกัน iOS ซูมเข้า */
         @media screen and (max-width: 768px) {
             input[type="text"],
             input[type="number"],
@@ -103,6 +108,15 @@
         }
         .dynamic-text {
             color: var(--color-text);
+        }
+        .contact-circle-btn {
+            background-color: var(--color-contact-btn-bg);
+            color: var(--color-contact-btn-icon);
+            transition: all 0.25s ease;
+        }
+        .contact-circle-btn:hover {
+            transform: translateY(-3px) scale(1.08);
+            filter: brightness(1.05);
         }
     </style>
 </head>
@@ -186,24 +200,6 @@
                     <span>+ เขียนรีวิว</span>
                 </button>
             </div>
-
-            <!-- CONTACT US SECTION (เพิ่มส่วนนี้ตามรูปภาพ) -->
-            <div class="cute-card p-5 text-center space-y-4">
-                <h3 class="font-cute text-2xl font-bold text-gray-800 tracking-wide flex items-center justify-center gap-1">
-                    C<span class="inline-block text-rose-400"><i class="fa-solid fa-heart text-sm"></i></span>ntact us
-                </h3>
-                <div class="flex items-center justify-center gap-6 pt-1">
-                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
-                       class="w-14 h-14 rounded-full border-2 border-gray-800 flex items-center justify-center text-gray-800 hover:bg-gray-100 hover:scale-105 transition duration-200 shadow-sm">
-                        <span class="font-cute text-2xl font-bold lowercase">f</span>
-                    </a>
-                    <a href="https://line.me" target="_blank" rel="noopener noreferrer" 
-                       class="w-14 h-14 rounded-full border-2 border-gray-800 flex items-center justify-center text-gray-800 hover:bg-gray-100 hover:scale-105 transition duration-200 shadow-sm">
-                        <span class="font-cute text-sm font-bold">Line</span>
-                    </a>
-                </div>
-            </div>
-
             <!-- ADMIN MODERATION SECTION -->
             <div id="adminModerationSection" class="hidden bg-amber-50/95 border-2 border-amber-200 rounded-2xl p-4 shadow-sm space-y-3">
                 <div class="flex items-center justify-between border-b border-amber-200/80 pb-2">
@@ -222,6 +218,21 @@
                 </div>
                 <div id="approvedReviewsContainer" class="space-y-3"></div>
             </div>
+
+            <!-- CONTACT US SECTION (ไม่มีกรอบ) -->
+            <section class="py-4 text-center space-y-3">
+                <h3 class="font-heading text-base font-semibold dynamic-text tracking-wide">Contact Us</h3>
+                <div class="flex items-center justify-center space-x-4">
+                    <!-- วงกลม 1: ปุ่ม Facebook -->
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="contact-circle-btn w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-md border border-white/40">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <!-- วงกลม 2: ปุ่ม Line -->
+                    <a href="https://line.me" target="_blank" rel="noopener noreferrer" aria-label="Line" class="contact-circle-btn w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-md border border-white/40">
+                        <i class="fa-brands fa-line"></i>
+                    </a>
+                </div>
+            </section>
         </section>
     </main>
     <!-- WRITE REVIEW MODAL -->
@@ -260,16 +271,19 @@
             </form>
         </div>
     </div>
-    <!-- MODAL: ADVANCED COLOR CUSTOMIZER -->
+    <!-- MODAL: แอดมินจัดการปรับแต่งสีทุกจุด (ADVANCED COLOR CUSTOMIZER) -->
     <div id="colorThemeModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-sm w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-4 text-gray-700 max-h-[90vh] overflow-y-auto">
             <button onclick="closeColorThemeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
+            
             <div class="text-center">
                 <h3 class="font-heading text-sm dynamic-text font-medium flex items-center justify-center gap-1.5">
                     <i class="fa-solid fa-palette"></i> ปรับแต่งโทนสีเว็บทุกจุด (แอดมิน)
                 </h3>
                 <p class="text-[10px] text-gray-400 mt-0.5">เลือกสีที่ชอบและปรับเปลี่ยนได้อิสระเลยครับ</p>
             </div>
+            
+            <!-- Quick Presets -->
             <div class="space-y-1.5">
                 <label class="block text-[11px] font-medium text-gray-600">ธีมสำเร็จรูป (Presets):</label>
                 <div class="grid grid-cols-4 gap-1.5 text-[10px]">
@@ -280,6 +294,7 @@
                 </div>
             </div>
             <hr class="border-gray-100">
+            <!-- Individual Color Pickers -->
             <div class="space-y-2.5 text-xs">
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
                     <div>
@@ -341,6 +356,17 @@
                         <input type="text" id="textBorder" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
                     </div>
                 </div>
+                <!-- ตัวเลือกสีใหม่: ปุ่มวงกลม Contact -->
+                <div class="flex items-center justify-between bg-pink-50/50 p-2 rounded-xl border border-pink-200">
+                    <div>
+                        <span class="font-medium block text-gray-700 text-[11px]">7. สีปุ่ม Contact Us (วงกลม)</span>
+                        <span class="text-[9px] text-gray-400">พื้นหลังของปุ่มวงกลม Facebook & Line</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <input type="color" id="pickerContactBtnBg" class="w-7 h-7 rounded-lg cursor-pointer border-none bg-transparent">
+                        <input type="text" id="textContactBtnBg" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
+                    </div>
+                </div>
             </div>
             <button onclick="saveAllCustomColors()" class="cute-btn w-full py-2 rounded-xl text-xs font-medium shadow-md">
                 บันทึกการตั้งค่าสีลงระบบ 🎨✨
@@ -366,7 +392,7 @@
             </div>
         </div>
     </div>
-    <!-- MODAL: เปลี่ยนแบนเนอร์ -->
+    <!-- MODAL: เปลี่ยนแบนเนอร์ (1122x495) -->
     <div id="bannerModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-3 text-gray-700">
             <button onclick="closeBannerModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
@@ -435,13 +461,15 @@
             border: '#FFE4E8',
             text: '#E06D83',
             bg: '#FAF4F5',
-            card: '#FFFFFF'
+            card: '#FFFFFF',
+            contactBtnBg: '#FF94A8',
+            contactBtnIcon: '#FFFFFF'
         };
         const presetThemes = {
-            pink: { header: '#FFFFFF', main: '#FF94A8', light: '#FFF0F3', border: '#FFE4E8', text: '#E06D83', bg: '#FAF4F5', card: '#FFFFFF' },
-            blue: { header: '#FFFFFF', main: '#52B2BF', light: '#E8F8F5', border: '#B2EBF2', text: '#2B7A78', bg: '#F4F9F9', card: '#FFFFFF' },
-            purple: { header: '#FFFFFF', main: '#B39DDB', light: '#F3E5F5', border: '#E1BEE7', text: '#6A1B9A', bg: '#FAF5FB', card: '#FFFFFF' },
-            green: { header: '#FFFFFF', main: '#81C784', light: '#E8F5E9', border: '#C8E6C9', text: '#2E7D32', bg: '#F4F9F4', card: '#FFFFFF' }
+            pink: { header: '#FFFFFF', main: '#FF94A8', light: '#FFF0F3', border: '#FFE4E8', text: '#E06D83', bg: '#FAF4F5', card: '#FFFFFF', contactBtnBg: '#FF94A8', contactBtnIcon: '#FFFFFF' },
+            blue: { header: '#FFFFFF', main: '#52B2BF', light: '#E8F8F5', border: '#B2EBF2', text: '#2B7A78', bg: '#F4F9F9', card: '#FFFFFF', contactBtnBg: '#52B2BF', contactBtnIcon: '#FFFFFF' },
+            purple: { header: '#FFFFFF', main: '#B39DDB', light: '#F3E5F5', border: '#E1BEE7', text: '#6A1B9A', bg: '#FAF5FB', card: '#FFFFFF', contactBtnBg: '#B39DDB', contactBtnIcon: '#FFFFFF' },
+            green: { header: '#FFFFFF', main: '#81C784', light: '#E8F5E9', border: '#C8E6C9', text: '#2E7D32', bg: '#F4F9F4', card: '#FFFFFF', contactBtnBg: '#81C784', contactBtnIcon: '#FFFFFF' }
         };
         function adjustColorBrightness(hex, percent) {
             let num = parseInt(hex.replace('#',''), 16),
@@ -451,6 +479,7 @@
             B = (num & 0x0000FF) + amt;
             return '#' + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
         }
+        // Apply theme settings to CSS Variables and Color Inputs
         function applyCustomTheme(themeObj) {
             const theme = { ...defaultTheme, ...themeObj };
             const root = document.documentElement;
@@ -462,12 +491,17 @@
             root.style.setProperty('--color-text', theme.text);
             root.style.setProperty('--color-bg', theme.bg);
             root.style.setProperty('--color-card', theme.card || '#FFFFFF');
+            root.style.setProperty('--color-contact-btn-bg', theme.contactBtnBg || theme.main);
+            root.style.setProperty('--color-contact-btn-icon', theme.contactBtnIcon || '#FFFFFF');
+
+            // Sync with Modal Inputs
             syncColorInput('pickerHeader', 'textHeader', theme.header || '#FFFFFF');
             syncColorInput('pickerMain', 'textMain', theme.main);
             syncColorInput('pickerBg', 'textBg', theme.bg);
             syncColorInput('pickerCard', 'textCard', theme.card || '#FFFFFF');
             syncColorInput('pickerText', 'textText', theme.text);
             syncColorInput('pickerBorder', 'textBorder', theme.border);
+            syncColorInput('pickerContactBtnBg', 'textContactBtnBg', theme.contactBtnBg || theme.main);
         }
         function syncColorInput(pickerId, textId, value) {
             const picker = document.getElementById(pickerId);
@@ -477,6 +511,7 @@
                 text.value = value.toUpperCase();
             }
         }
+        // Setup real-time color picker listeners inside Modal
         function setupColorPickerEvents() {
             const pairs = [
                 ['pickerHeader', 'textHeader'],
@@ -484,7 +519,8 @@
                 ['pickerBg', 'textBg'],
                 ['pickerCard', 'textCard'],
                 ['pickerText', 'textText'],
-                ['pickerBorder', 'textBorder']
+                ['pickerBorder', 'textBorder'],
+                ['pickerContactBtnBg', 'textContactBtnBg']
             ];
             pairs.forEach(([pickerId, textId]) => {
                 const picker = document.getElementById(pickerId);
@@ -513,7 +549,8 @@
                 card: document.getElementById('pickerCard').value,
                 text: document.getElementById('pickerText').value,
                 border: document.getElementById('pickerBorder').value,
-                light: adjustColorBrightness(document.getElementById('pickerMain').value, 75)
+                light: adjustColorBrightness(document.getElementById('pickerMain').value, 75),
+                contactBtnBg: document.getElementById('pickerContactBtnBg').value
             };
             applyCustomTheme(tempTheme);
         }
@@ -530,7 +567,8 @@
                 card: document.getElementById('pickerCard').value,
                 text: document.getElementById('pickerText').value,
                 border: document.getElementById('pickerBorder').value,
-                light: adjustColorBrightness(document.getElementById('pickerMain').value, 75)
+                light: adjustColorBrightness(document.getElementById('pickerMain').value, 75),
+                contactBtnBg: document.getElementById('pickerContactBtnBg').value
             };
             applyCustomTheme(customTheme);
             if (rtdb) {
@@ -548,6 +586,7 @@
         }
         function openColorThemeModal() { document.getElementById('colorThemeModal').classList.remove('hidden'); }
         function closeColorThemeModal() { document.getElementById('colorThemeModal').classList.add('hidden'); }
+        // --- MUSIC TOGGLE ---
         function toggleMusic() {
             const audio = document.getElementById('bgAudio');
             const icon = document.getElementById('musicIcon');
@@ -576,6 +615,7 @@
                 }
                 if (settings.aboutBanner) document.getElementById('aboutBannerImg').src = settings.aboutBanner;
                 
+                // Load Custom Theme Config from Firebase
                 if (settings.themeConfig) {
                     applyCustomTheme(settings.themeConfig);
                 } else if (settings.theme && typeof settings.theme === 'string') {
