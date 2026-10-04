@@ -105,12 +105,23 @@
                 </button>
             </div>
 
+            <!-- ส่วนหัวข้อรีวิว พร้อมสรุปคะแนนและจำนวนผู้รีวิว -->
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-pink-100 flex items-center justify-between">
                 <div>
                     <h3 class="font-heading text-sm text-pastel-darkpink font-medium flex items-center gap-1.5">
                         <i class="fa-solid fa-comments"></i> รีวิวจากลูกค้า
                     </h3>
-                    <p class="text-[10px] text-gray-400">แบ่งปันความประทับใจของคุณได้ที่นี่ค่ะ</p>
+                    <div class="flex items-center space-x-3 text-xs text-gray-500 mt-1 font-medium">
+                        <span class="flex items-center text-rose-500 gap-1">
+                            <i class="fa-solid fa-heart"></i>
+                            <span id="avgRatingText" class="font-bold text-gray-700">0.0</span>
+                        </span>
+                        <span class="text-gray-300">|</span>
+                        <span class="flex items-center text-pastel-darkpink gap-1">
+                            <i class="fa-solid fa-user"></i>
+                            <span id="reviewersCountText" class="text-gray-700">0 คน</span>
+                        </span>
+                    </div>
                 </div>
                 <button id="writeReviewBtn" onclick="toggleWriteReviewModal()" class="bg-pastel-darkpink hover:bg-pastel-deepness text-white text-[11px] px-3 py-1.5 rounded-full font-medium transition shadow-sm flex items-center space-x-1 shrink-0">
                     <i class="fa-solid fa-pen text-[9px]"></i>
@@ -394,7 +405,14 @@
             const approvedReviews = reviews.filter(r => r.status === 'approved');
             const pendingReviews = reviews.filter(r => r.status === 'pending');
 
-            document.getElementById('approvedCountText').textContent = `ทั้งหมด ${approvedReviews.length} รีวิว`;
+            // --- คำนวณคะแนนเฉลี่ยและจำนวนผู้รีวิว (จากรีวิวที่อนุมัติแล้ว) ---
+            const totalApproved = approvedReviews.length;
+            const sumRating = approvedReviews.reduce((sum, r) => sum + Number(r.rating || 5), 0);
+            const avgRating = totalApproved > 0 ? (sumRating / totalApproved).toFixed(1) : "0.0";
+
+            document.getElementById('avgRatingText').textContent = avgRating;
+            document.getElementById('reviewersCountText').textContent = `${totalApproved} คน`;
+            document.getElementById('approvedCountText').textContent = `ทั้งหมด ${totalApproved} รีวิว`;
 
             if (isAdmin) {
                 adminModSection.classList.remove('hidden');
