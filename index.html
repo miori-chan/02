@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pinkie Studio - รีวิวสินค้า</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,18 +23,8 @@
                             light: 'var(--color-light, #FFF0F3)',
                             border: 'var(--color-border, #FFE4E8)',
                             text: 'var(--color-text, #E06D83)',
-                            bg: 'var(--color-bg, #FAF4F5)'
-                        },
-                        pastel: {
-                            pink: '#FFD1DC',
-                            lightpink: '#FFF0F3',
-                            deepness: '#FF94A8',
-                            rose: '#FFB6C1',
-                            cream: '#FFF9F5',
-                            softblue: '#E2F0CB',
-                            gray: '#706C61',
-                            darkpink: '#E06D83',
-                            bg: '#FAF4F5'
+                            bg: 'var(--color-bg, #FAF4F5)',
+                            card: 'var(--color-card, #FFFFFF)'
                         }
                     },
                     fontFamily: {
@@ -53,8 +43,30 @@
             --color-border: #FFE4E8;
             --color-text: #E06D83;
             --color-bg: #FAF4F5;
+            --color-card: #FFFFFF;
         }
-        body { background-color: var(--color-bg); font-family: 'Kanit', sans-serif; }
+        
+        html, body { 
+            background-color: var(--color-bg); 
+            color: var(--color-text);
+            font-family: 'Kanit', sans-serif;
+            touch-action: manipulation;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* บังคับช่องกรอกข้อมูลทั้งหมดให้มีขนาดอย่างน้อย 16px บนมือถือป้องกัน iOS ซูมเข้า */
+        @media screen and (max-width: 768px) {
+            input[type="text"],
+            input[type="number"],
+            input[type="email"],
+            input[type="password"],
+            input[type="url"],
+            textarea,
+            select {
+                font-size: 16px !important;
+            }
+        }
+
         .font-heading { font-family: 'Mitr', sans-serif; }
         .font-cute { font-family: 'Itim', cursive; }
         ::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -63,17 +75,20 @@
         .aspect-banner { aspect-ratio: 1122 / 495; }
         
         .cute-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(8px);
+            background-color: var(--color-card);
             border: 2px solid var(--color-border);
             box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.05);
             border-radius: 1.25rem;
+            transition: all 0.3s ease;
         }
         .cute-btn {
+            background-color: var(--color-main);
+            color: #ffffff;
             transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .cute-btn:hover {
             transform: translateY(-2px) scale(1.02);
+            filter: brightness(1.05);
         }
         .heart-btn {
             transition: transform 0.2s ease;
@@ -81,23 +96,32 @@
         .heart-btn:hover {
             transform: scale(1.3) rotate(6deg);
         }
+        .dynamic-bg-light {
+            background-color: var(--color-light);
+        }
+        .dynamic-border {
+            border-color: var(--color-border);
+        }
+        .dynamic-text {
+            color: var(--color-text);
+        }
     </style>
 </head>
-<body class="text-gray-700 min-h-screen flex flex-col justify-between">
+<body class="min-h-screen flex flex-col justify-between">
     <!-- Audio Player Hidden Element -->
     <audio id="bgAudio" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Admin Top Banner -->
-    <div id="adminBanner" class="hidden bg-theme-main text-white py-2 px-4 text-center text-xs font-medium shadow-md flex justify-between items-center transition-all duration-300 max-w-md mx-auto w-full rounded-b-xl">
+    <div id="adminBanner" class="hidden text-white py-2 px-4 text-center text-xs font-medium shadow-md flex justify-between items-center transition-all duration-300 max-w-md mx-auto w-full rounded-b-xl" style="background-color: var(--color-main);">
         <div class="flex items-center space-x-2">
-            <span class="bg-white text-theme-text text-[10px] px-2.5 py-0.5 rounded-full font-bold shadow-sm">ADMIN MODE</span>
-            <span class="text-[11px] truncate">✨ จัดการอนุมัติและรีวิวสินค้า</span>
+            <span class="bg-white text-gray-800 text-[10px] px-2.5 py-0.5 rounded-full font-bold shadow-sm">ADMIN MODE</span>
+            <span class="text-[11px] truncate">✨ จัดการธีมสีและอนุมัติรีวิว</span>
         </div>
         <div class="flex items-center space-x-1">
             <button onclick="openColorThemeModal()" class="bg-white/20 hover:bg-white/30 text-white text-[10px] px-2.5 py-1 rounded-full transition duration-200 shrink-0 border border-white/30">
-                <i class="fa-solid fa-palette mr-1"></i> โทนสี
+                <i class="fa-solid fa-palette mr-1"></i> ปรับแต่งสีทุกจุด
             </button>
             <button onclick="logoutAdmin()" class="bg-white/20 hover:bg-white/30 text-white text-[10px] px-2.5 py-1 rounded-full transition duration-200 shrink-0 border border-white/30">
                 <i class="fa-solid fa-sign-out-alt mr-1"></i> ออก
@@ -106,17 +130,17 @@
     </div>
 
     <!-- Header / Navbar -->
-    <header class="bg-white/85 backdrop-blur-md sticky top-0 z-40 border-b border-theme-border shadow-sm max-w-md mx-auto w-full">
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b dynamic-border shadow-sm max-w-md mx-auto w-full">
         <div class="px-4 py-2.5 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <a href="#" class="flex items-center space-x-2 group">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-theme-light to-white flex items-center justify-center text-theme-text text-lg font-bold shadow-inner group-hover:scale-105 transition overflow-hidden shrink-0 border border-theme-border">
+                    <div class="w-9 h-9 rounded-full dynamic-bg-light flex items-center justify-center dynamic-text text-lg font-bold shadow-inner group-hover:scale-105 transition overflow-hidden shrink-0 border dynamic-border">
                         <img id="storeLogoImg" src="" class="w-full h-full object-cover hidden" alt="Logo">
                         <span id="storeLogoText">🌸</span>
                     </div>
                     <div>
-                        <span id="storeNameText" class="font-heading text-base font-medium text-theme-text tracking-wide block leading-tight">Pinkie Studio</span>
-                        <span class="block text-[9px] text-theme-text opacity-70 tracking-wider font-cute">💖 REVIEWS & FEEDBACK PAGE 💖</span>
+                        <span id="storeNameText" class="font-heading text-base font-medium dynamic-text tracking-wide block leading-tight">Pinkie Studio</span>
+                        <span class="block text-[9px] dynamic-text opacity-80 tracking-wider font-cute">💖 REVIEWS & FEEDBACK PAGE 💖</span>
                     </div>
                 </a>
                 <button id="changeLogoBtn" onclick="openLogoModal()" class="hidden text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-lg hover:bg-amber-200 ml-1 shadow-sm">
@@ -125,45 +149,45 @@
             </div>
 
             <div class="flex items-center space-x-2">
-                <button id="musicToggleBtn" onclick="toggleMusic()" class="relative text-theme-text hover:bg-theme-light transition bg-theme-light rounded-full w-8 h-8 flex items-center justify-center shadow-sm shrink-0 border border-theme-border">
+                <button id="musicToggleBtn" onclick="toggleMusic()" class="relative dynamic-text hover:opacity-80 transition dynamic-bg-light rounded-full w-8 h-8 flex items-center justify-center shadow-sm shrink-0 border dynamic-border">
                     <i id="musicIcon" class="fa-solid fa-music text-xs"></i>
                 </button>
-                <button id="adminLoginBtn" onclick="openAdminModal()" class="text-xs bg-theme-light hover:bg-theme-border text-theme-text h-8 px-3 rounded-full font-medium transition flex items-center space-x-1 shrink-0 border border-theme-border">
+                <button id="adminLoginBtn" onclick="openAdminModal()" class="text-xs dynamic-bg-light hover:opacity-80 dynamic-text h-8 px-3 rounded-full font-medium transition flex items-center space-x-1 shrink-0 border dynamic-border">
                     <i class="fa-solid fa-lock text-[10px]"></i> <span id="adminBtnText">แอดมิน</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- MAIN CONTENT (REVIEWS ONLY) -->
+    <!-- MAIN CONTENT -->
     <main class="max-w-md mx-auto px-3 py-4 flex-grow w-full">
         <section id="page-reviews" class="space-y-4 max-w-md mx-auto">
-            <div class="relative w-full aspect-banner bg-theme-light rounded-2xl overflow-hidden border-2 border-theme-border shadow-sm group">
+            <div class="relative w-full aspect-banner dynamic-bg-light rounded-2xl overflow-hidden border-2 dynamic-border shadow-sm group">
                 <img id="aboutBannerImg" src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=1200&auto=format&fit=crop&q=80" class="w-full h-full object-cover">
                 <button id="editAboutBannerBtn" onclick="openBannerModal('about')" class="hidden absolute top-2 right-2 bg-white/90 text-amber-600 px-2.5 py-1 rounded-full text-[10px] font-medium shadow hover:bg-white flex items-center space-x-1">
                     <i class="fa-solid fa-camera"></i> <span>เปลี่ยนแบนเนอร์ (1122x495)</span>
                 </button>
             </div>
 
-            <!-- ส่วนหัวข้อรีวิว พร้อมสรุปรีวิวและจำนวนผู้รีวิว -->
+            <!-- สรุปคะแนนรีวิว -->
             <div class="cute-card p-4 flex items-center justify-between">
                 <div>
-                    <h3 class="font-heading text-sm text-theme-text font-medium flex items-center gap-1.5">
+                    <h3 class="font-heading text-sm dynamic-text font-medium flex items-center gap-1.5">
                         <i class="fa-solid fa-heart text-rose-500 animate-pulse"></i> รีวิวจากลูกค้าสุดน่ารัก
                     </h3>
-                    <div class="flex items-center space-x-3 text-xs text-gray-500 mt-1 font-medium">
+                    <div class="flex items-center space-x-3 text-xs opacity-90 mt-1 font-medium">
                         <span class="flex items-center text-rose-500 gap-1 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100">
                             <i class="fa-solid fa-heart text-[10px]"></i>
                             <span id="avgRatingText" class="font-bold text-rose-600">0.0</span>
                         </span>
-                        <span class="text-gray-300">|</span>
-                        <span class="flex items-center text-theme-text gap-1 bg-theme-light px-2 py-0.5 rounded-full border border-theme-border">
+                        <span class="opacity-30">|</span>
+                        <span class="flex items-center dynamic-text gap-1 dynamic-bg-light px-2 py-0.5 rounded-full border dynamic-border">
                             <i class="fa-solid fa-user text-[10px]"></i>
-                            <span id="reviewersCountText" class="text-theme-text font-bold">0 คน</span>
+                            <span id="reviewersCountText" class="font-bold">0 คน</span>
                         </span>
                     </div>
                 </div>
-                <button id="writeReviewBtn" onclick="toggleWriteReviewModal()" class="cute-btn bg-theme-main text-white text-[11px] px-3.5 py-2 rounded-full font-medium shadow-md flex items-center space-x-1 shrink-0 border border-white/40">
+                <button id="writeReviewBtn" onclick="toggleWriteReviewModal()" class="cute-btn text-[11px] px-3.5 py-2 rounded-full font-medium shadow-md flex items-center space-x-1 shrink-0 border border-white/40">
                     <i class="fa-solid fa-pen-nib text-[10px]"></i>
                     <span>+ เขียนรีวิว</span>
                 </button>
@@ -174,7 +198,7 @@
                 <div class="flex items-center justify-between border-b border-amber-200/80 pb-2">
                     <div class="flex items-center space-x-2">
                         <span class="bg-amber-400 text-white text-[9px] px-2 py-0.5 rounded-full font-bold shadow-sm">ADMIN ONLY</span>
-                        <h4 class="font-heading text-xs text-amber-900 font-medium">รอการอนุมัติ (รูปหลักฐานเห็นเฉพาะแอดมิน)</h4>
+                        <h4 class="font-heading text-xs text-amber-900 font-medium">รอการอนุมัติ</h4>
                     </div>
                     <span id="pendingCountBadge" class="text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full font-bold">0 รายการ</span>
                 </div>
@@ -183,8 +207,8 @@
 
             <!-- APPROVED REVIEWS FEED -->
             <div class="cute-card p-4 space-y-4">
-                <div class="flex items-center justify-between border-b border-theme-border pb-2">
-                    <span id="approvedCountText" class="text-[11px] text-gray-400 font-cute">ทั้งหมด 0 รีวิว 🌷</span>
+                <div class="flex items-center justify-between border-b dynamic-border pb-2">
+                    <span id="approvedCountText" class="text-[11px] opacity-70 font-cute">ทั้งหมด 0 รีวิว 🌷</span>
                 </div>
                 <div id="approvedReviewsContainer" class="space-y-3"></div>
             </div>
@@ -193,23 +217,23 @@
 
     <!-- WRITE REVIEW MODAL -->
     <div id="reviewModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 border-theme-border relative space-y-3">
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-3 text-gray-700">
             <button onclick="toggleWriteReviewModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400 transition">
                 <i class="fa-solid fa-circle-xmark text-xl"></i>
             </button>
             <div class="text-center space-y-1">
                 <span class="text-2xl animate-bounce inline-block">📝✨</span>
-                <h3 class="font-heading text-base text-theme-text font-medium">เขียนรีวิวสินค้า</h3>
-                <p class="text-[10px] text-theme-text font-cute opacity-80">แชร์ความน่ารักและความประทับใจของคุณให้เราฟังหน่อยน้า</p>
+                <h3 class="font-heading text-base dynamic-text font-medium">เขียนรีวิวสินค้า</h3>
+                <p class="text-[10px] opacity-80 font-cute">แชร์ความประทับใจของคุณให้เราฟังหน่อยน้า</p>
             </div>
             <form onsubmit="handleCustomerSubmitReview(event)" class="space-y-3 text-xs">
                 <div>
-                    <label class="block text-gray-600 font-medium mb-1">ชื่อผู้รีวิว 🌸</label>
-                    <input type="text" id="revAuthor" required placeholder="ใส่ชื่อน่ารักๆ ของคุณ..." class="w-full bg-theme-light/40 border border-theme-border rounded-xl px-3 py-1.5 focus:outline-none focus:border-theme-main text-xs">
+                    <label class="block font-medium mb-1">ชื่อผู้รีวิว 🌸</label>
+                    <input type="text" id="revAuthor" required placeholder="ใส่ชื่อน่ารักๆ ของคุณ..." class="w-full dynamic-bg-light border dynamic-border rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400">
                 </div>
                 <div>
-                    <label class="block text-gray-600 font-medium mb-1">การให้รีวิว (ระดับความประทับใจ) 💕</label>
-                    <div class="flex space-x-2 text-xl text-rose-500 justify-center py-2 bg-theme-light/30 rounded-xl border border-theme-border" id="starSelector">
+                    <label class="block font-medium mb-1">ระดับความประทับใจ 💕</label>
+                    <div class="flex space-x-2 text-xl text-rose-500 justify-center py-2 dynamic-bg-light rounded-xl border dynamic-border" id="starSelector">
                         <button type="button" onclick="setSelectRating(1)" class="heart-btn text-rose-500"><i class="fa-solid fa-heart"></i></button>
                         <button type="button" onclick="setSelectRating(2)" class="heart-btn text-rose-500"><i class="fa-solid fa-heart"></i></button>
                         <button type="button" onclick="setSelectRating(3)" class="heart-btn text-rose-500"><i class="fa-solid fa-heart"></i></button>
@@ -218,118 +242,161 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-gray-600 font-medium mb-1">ข้อความรีวิว 💌</label>
-                    <textarea id="revComment" rows="3" required placeholder="แชร์ความประทับใจของคุณได้เต็มที่เลยนะคะ..." class="w-full bg-theme-light/40 border border-theme-border rounded-xl px-3 py-1.5 focus:outline-none focus:border-theme-main text-xs"></textarea>
+                    <label class="block font-medium mb-1">ข้อความรีวิว 💌</label>
+                    <textarea id="revComment" rows="3" required placeholder="แชร์ความประทับใจได้เลยนะคะ..." class="w-full dynamic-bg-light border dynamic-border rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400"></textarea>
                 </div>
-                <button type="submit" id="submitReviewBtn" class="cute-btn w-full bg-theme-main text-white py-2 rounded-full font-medium shadow-md">
-                    ส่งรีวิวให้แอดมินอนุมัติ 🌸✨
+                <button type="submit" id="submitReviewBtn" class="cute-btn w-full py-2 rounded-full font-medium shadow-md">
+                    ส่งรีวิวให้แอนมินอนุมัติ 🌸✨
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL: เปลี่ยนโทนสีเว็บไซต์ (เพิ่มการระบุโค้ดสีเอง) -->
+    <!-- MODAL: แอดมินจัดการปรับแต่งสีทุกจุด (ADVANCED COLOR CUSTOMIZER) -->
     <div id="colorThemeModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 border-theme-border relative space-y-3">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-4 text-gray-700 max-h-[90vh] overflow-y-auto">
             <button onclick="closeColorThemeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
-            <h3 class="font-heading text-sm text-theme-text font-medium flex items-center gap-1.5">
-                <i class="fa-solid fa-palette"></i> เลือกหรือระบุโทนสีเว็บไซต์
-            </h3>
             
-            <div class="space-y-3 text-xs">
-                <!-- Preset Themes -->
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="applyAndSaveTheme('pink')" class="p-2 rounded-xl border border-pink-300 bg-pink-50 hover:bg-pink-100 flex items-center space-x-1.5 text-[11px] font-medium text-pink-600">
-                        <span class="w-3.5 h-3.5 rounded-full bg-pink-400 inline-block shrink-0"></span>
-                        <span>ชมพูพาสเทล</span>
-                    </button>
-                    <button onclick="applyAndSaveTheme('blue')" class="p-2 rounded-xl border border-sky-300 bg-sky-50 hover:bg-sky-100 flex items-center space-x-1.5 text-[11px] font-medium text-sky-600">
-                        <span class="w-3.5 h-3.5 rounded-full bg-sky-400 inline-block shrink-0"></span>
-                        <span>ฟ้าพาสเทล</span>
-                    </button>
-                    <button onclick="applyAndSaveTheme('purple')" class="p-2 rounded-xl border border-purple-300 bg-purple-50 hover:bg-purple-100 flex items-center space-x-1.5 text-[11px] font-medium text-purple-600">
-                        <span class="w-3.5 h-3.5 rounded-full bg-purple-400 inline-block shrink-0"></span>
-                        <span>ม่วงพาสเทล</span>
-                    </button>
-                    <button onclick="applyAndSaveTheme('green')" class="p-2 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 flex items-center space-x-1.5 text-[11px] font-medium text-emerald-600">
-                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 inline-block shrink-0"></span>
-                        <span>เขียวมินต์</span>
-                    </button>
-                </div>
-
-                <div class="text-center text-gray-400 font-bold text-[10px] my-1">- หรือกำหนดโค้ดสีเอง -</div>
-
-                <!-- Custom Color Input -->
-                <div class="space-y-2 bg-theme-light/40 p-2.5 rounded-2xl border border-theme-border">
-                    <label class="block text-gray-600 font-medium text-[11px]">เลือกหรือพิมพ์โค้ดสี Hex 🎨</label>
-                    <div class="flex items-center space-x-2">
-                        <input type="color" id="customColorPicker" value="#FF94A8" onchange="document.getElementById('customHexInput').value = this.value" class="w-8 h-8 rounded-lg cursor-pointer border-none bg-transparent shrink-0">
-                        <input type="text" id="customHexInput" placeholder="#FF94A8" value="#FF94A8" onchange="document.getElementById('customColorPicker').value = this.value" class="w-full bg-white border border-theme-border rounded-xl px-2.5 py-1 text-xs text-center font-mono focus:outline-none focus:border-theme-main">
-                    </div>
-                    <button onclick="applyCustomHexColor()" class="cute-btn w-full bg-theme-main text-white py-1.5 rounded-xl text-xs font-medium shadow-sm">
-                        นำเสนอและบันทึกสีนี้ 🎨
-                    </button>
+            <div class="text-center">
+                <h3 class="font-heading text-sm dynamic-text font-medium flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-palette"></i> ปรับแต่งโทนสีเว็บทุกจุด (แอดมิน)
+                </h3>
+                <p class="text-[10px] text-gray-400 mt-0.5">เลือกสีที่ชอบและปรับเปลี่ยนได้อิสระเลยครับ</p>
+            </div>
+            
+            <!-- Quick Presets -->
+            <div class="space-y-1.5">
+                <label class="block text-[11px] font-medium text-gray-600">ธีมสำเร็จรูป (Presets):</label>
+                <div class="grid grid-cols-4 gap-1.5 text-[10px]">
+                    <button onclick="applyPresetTheme('pink')" class="p-1.5 rounded-lg border border-pink-200 bg-pink-50 text-pink-600 font-medium hover:bg-pink-100">🌸 ชมพู</button>
+                    <button onclick="applyPresetTheme('blue')" class="p-1.5 rounded-lg border border-sky-200 bg-sky-50 text-sky-600 font-medium hover:bg-sky-100">🌊 ฟ้า</button>
+                    <button onclick="applyPresetTheme('purple')" class="p-1.5 rounded-lg border border-purple-200 bg-purple-50 text-purple-600 font-medium hover:bg-purple-100">🍇 ม่วง</button>
+                    <button onclick="applyPresetTheme('green')" class="p-1.5 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-600 font-medium hover:bg-emerald-100">มินต์</button>
                 </div>
             </div>
+
+            <hr class="border-gray-100">
+
+            <!-- Individual Color Pickers -->
+            <div class="space-y-2.5 text-xs">
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
+                    <div>
+                        <span class="font-medium block text-gray-700 text-[11px]">1. สีหลัก (Main/Button Color)</span>
+                        <span class="text-[9px] text-gray-400">ปุ่มกด, แบนเนอร์แอดมิน, สโคลล์บาร์</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <input type="color" id="pickerMain" class="w-7 h-7 rounded-lg cursor-pointer border-none bg-transparent">
+                        <input type="text" id="textMain" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
+                    <div>
+                        <span class="font-medium block text-gray-700 text-[11px]">2. สีพื้นหลังเว็บ (Background Color)</span>
+                        <span class="text-[9px] text-gray-400">พื้นหลังของหน้าเว็บไซต์ทั้งหมด</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <input type="color" id="pickerBg" class="w-7 h-7 rounded-lg cursor-pointer border-none bg-transparent">
+                        <input type="text" id="textBg" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
+                    <div>
+                        <span class="font-medium block text-gray-700 text-[11px]">3. สีกล่องและ การ์ด (Card BG Color)</span>
+                        <span class="text-[9px] text-gray-400">พื้นหลังการ์ดรีวิวและกล่องเนื้อหา</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <input type="color" id="pickerCard" class="w-7 h-7 rounded-lg cursor-pointer border-none bg-transparent">
+                        <input type="text" id="textCard" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
+                    <div>
+                        <span class="font-medium block text-gray-700 text-[11px]">4. สีข้อความและไอคอน (Text Color)</span>
+                        <span class="text-[9px] text-gray-400">หัวข้อ ตัวหนังสือ และไอคอนต่างๆ</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <input type="color" id="pickerText" class="w-7 h-7 rounded-lg cursor-pointer border-none bg-transparent">
+                        <input type="text" id="textText" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
+                    <div>
+                        <span class="font-medium block text-gray-700 text-[11px]">5. สีเส้นขอบ (Border Color)</span>
+                        <span class="text-[9px] text-gray-400">เส้นขอบการ์ด กล่องปุ่มกด และ Input</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <input type="color" id="pickerBorder" class="w-7 h-7 rounded-lg cursor-pointer border-none bg-transparent">
+                        <input type="text" id="textBorder" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="saveAllCustomColors()" class="cute-btn w-full py-2 rounded-xl text-xs font-medium shadow-md">
+                บันทึกการตั้งค่าสีลงระบบ 🎨✨
+            </button>
         </div>
     </div>
 
     <!-- MODAL: เปลี่ยนโลโก้ร้าน -->
     <div id="logoModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 border-theme-border relative space-y-3">
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-3 text-gray-700">
             <button onclick="closeLogoModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
-            <h3 class="font-heading text-sm text-theme-text font-medium">เปลี่ยนโลโก้</h3>
+            <h3 class="font-heading text-sm dynamic-text font-medium">เปลี่ยนโลโก้ร้าน</h3>
             <div class="space-y-2.5 text-xs">
                 <div>
-                    <label class="block text-gray-600 mb-1">เลือกรูปจากอัลบั้มมือถือ</label>
-                    <input type="file" id="logoFileInput" accept="image/*" onchange="handleImageUpload(event, saveLogoData)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-full file:border-0 file:bg-theme-light file:text-theme-text font-medium">
+                    <label class="block font-medium mb-1">เลือกรูปจากอัลบั้มมือถือ</label>
+                    <input type="file" id="logoFileInput" accept="image/*" onchange="handleImageUpload(event, saveLogoData)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-full file:border-0 file:bg-pink-50 file:text-pink-600 font-medium">
                 </div>
                 <div class="text-center text-gray-400 font-bold text-[10px]">- หรือ -</div>
                 <div>
-                    <label class="block text-gray-600 mb-1">ใส่ URL รูปภาพ</label>
-                    <input type="url" id="logoUrlInput" placeholder="https://..." class="w-full border border-theme-border rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-theme-main">
+                    <label class="block font-medium mb-1">ใส่ URL รูปภาพ</label>
+                    <input type="url" id="logoUrlInput" placeholder="https://..." class="w-full border dynamic-border rounded-xl px-3 py-1.5 focus:outline-none">
                 </div>
-                <button onclick="saveLogoUrl()" class="cute-btn w-full bg-theme-main text-white py-1.5 rounded-full text-xs font-medium shadow-sm">บันทึกโลโก้</button>
+                <button onclick="saveLogoUrl()" class="cute-btn w-full py-1.5 rounded-full text-xs font-medium shadow-sm">บันทึกโลโก้</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL: เปลี่ยนแบนเนอร์ (1122x495) -->
     <div id="bannerModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 border-theme-border relative space-y-3">
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-3 text-gray-700">
             <button onclick="closeBannerModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
-            <h3 class="font-heading text-sm text-theme-text font-medium">เปลี่ยนรูปแบนเนอร์ (1122 x 495)</h3>
+            <h3 class="font-heading text-sm dynamic-text font-medium">เปลี่ยนรูปแบนเนอร์ (1122 x 495)</h3>
             <input type="hidden" id="targetBannerType">
             <div class="space-y-2.5 text-xs">
                 <div>
-                    <label class="block text-gray-600 mb-1">อัปโหลดจากมือถือ</label>
-                    <input type="file" id="bannerFileInput" accept="image/*" onchange="handleImageUpload(event, saveBannerData)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-full file:border-0 file:bg-theme-light file:text-theme-text font-medium">
+                    <label class="block font-medium mb-1">อัปโหลดจากมือถือ</label>
+                    <input type="file" id="bannerFileInput" accept="image/*" onchange="handleImageUpload(event, saveBannerData)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-full file:border-0 file:bg-pink-50 file:text-pink-600 font-medium">
                 </div>
                 <div class="text-center text-gray-400 font-bold text-[10px]">- หรือ -</div>
                 <div>
-                    <label class="block text-gray-600 mb-1">ระบุ URL รูปภาพ</label>
-                    <input type="url" id="bannerUrlInput" placeholder="https://..." class="w-full border border-theme-border rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-theme-main">
+                    <label class="block font-medium mb-1">ระบุ URL รูปภาพ</label>
+                    <input type="url" id="bannerUrlInput" placeholder="https://..." class="w-full border dynamic-border rounded-xl px-3 py-1.5 focus:outline-none">
                 </div>
-                <button onclick="saveBannerUrl()" class="cute-btn w-full bg-theme-main text-white py-1.5 rounded-full text-xs font-medium shadow-sm">บันทึกแบนเนอร์</button>
+                <button onclick="saveBannerUrl()" class="cute-btn w-full py-1.5 rounded-full text-xs font-medium shadow-sm">บันทึกแบนเนอร์</button>
             </div>
         </div>
     </div>
 
     <!-- ADMIN LOGIN MODAL -->
     <div id="adminModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 border-theme-border relative space-y-3 text-center">
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 dynamic-border relative space-y-3 text-center text-gray-700">
             <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
-            <div class="w-10 h-10 bg-theme-light text-theme-text rounded-full flex items-center justify-center mx-auto text-lg shadow-inner border border-theme-border">🔒</div>
-            <h3 class="font-heading text-sm text-gray-800 font-medium">เข้าสู่ระบบแอดมิน</h3>
+            <div class="w-10 h-10 dynamic-bg-light dynamic-text rounded-full flex items-center justify-center mx-auto text-lg shadow-inner border dynamic-border">🔒</div>
+            <h3 class="font-heading text-sm font-medium">เข้าสู่ระบบแอดมิน</h3>
             <div class="space-y-2">
-                <input type="email" id="adminEmail" placeholder="อีเมล Gmail (admin@gmail.com)" class="w-full bg-theme-light/30 border border-theme-border rounded-xl px-3 py-1.5 text-xs text-center focus:outline-none focus:border-theme-main">
-                <input type="password" id="adminPassword" placeholder="รหัสผ่าน" class="w-full bg-theme-light/30 border border-theme-border rounded-xl px-3 py-1.5 text-xs text-center focus:outline-none focus:border-theme-main">
+                <input type="email" id="adminEmail" placeholder="อีเมล Gmail (admin@gmail.com)" class="w-full dynamic-bg-light border dynamic-border rounded-xl px-3 py-1.5 text-center focus:outline-none">
+                <input type="password" id="adminPassword" placeholder="รหัสผ่าน" class="w-full dynamic-bg-light border dynamic-border rounded-xl px-3 py-1.5 text-center focus:outline-none">
             </div>
-            <button onclick="loginAdmin()" class="cute-btn w-full bg-theme-main text-white py-1.5 rounded-full text-xs font-medium shadow-sm">เข้าสู่ระบบ</button>
+            <button onclick="loginAdmin()" class="cute-btn w-full py-1.5 rounded-full text-xs font-medium shadow-sm">เข้าสู่ระบบ</button>
         </div>
     </div>
 
-    <footer class="bg-white/80 border-t border-theme-border py-4 text-center text-[10px] text-gray-400 mt-6 max-w-md mx-auto w-full font-cute">
+    <footer class="bg-white/80 border-t dynamic-border py-4 text-center text-[10px] opacity-70 mt-6 max-w-md mx-auto w-full font-cute">
         <p>© 2026 Pinkie Studio Store. Made with 💕 for Pastel Lovers 🎀</p>
     </footer>
 
@@ -354,20 +421,28 @@
             rtdb = firebase.database();
         } catch (e) { console.error("Firebase init failed:", e); }
         
-        // --- 2. GLOBAL STATES & THEMES ---
+        // --- 2. GLOBAL STATES & DEFAULT THEMES ---
         let reviews = [];
         let isAdmin = localStorage.getItem('pinkie_is_admin') === 'true';
         let currentSelectedRating = 5;
         let isPlaying = false;
 
-        const colorPresets = {
-            pink: { main: '#FF94A8', light: '#FFF0F3', border: '#FFE4E8', text: '#E06D83', bg: '#FAF4F5' },
-            blue: { main: '#70C1B3', light: '#E8F8F5', border: '#D1F2EB', text: '#2E86C1', bg: '#F4F9F9' },
-            purple: { main: '#B39DDB', light: '#F3E5F5', border: '#E1BEE7', text: '#7B1FA2', bg: '#FAF5FB' },
-            green: { main: '#81C784', light: '#E8F5E9', border: '#C8E6C9', text: '#2E7D32', bg: '#F4F9F4' }
+        const defaultTheme = {
+            main: '#FF94A8',
+            light: '#FFF0F3',
+            border: '#FFE4E8',
+            text: '#E06D83',
+            bg: '#FAF4F5',
+            card: '#FFFFFF'
         };
 
-        // ฟังก์ชันช่วยปรับความสว่างของสีสำหรับสร้างสีอ่อน/เข้ม
+        const presetThemes = {
+            pink: { main: '#FF94A8', light: '#FFF0F3', border: '#FFE4E8', text: '#E06D83', bg: '#FAF4F5', card: '#FFFFFF' },
+            blue: { main: '#52B2BF', light: '#E8F8F5', border: '#B2EBF2', text: '#2B7A78', bg: '#F4F9F9', card: '#FFFFFF' },
+            purple: { main: '#B39DDB', light: '#F3E5F5', border: '#E1BEE7', text: '#6A1B9A', bg: '#FAF5FB', card: '#FFFFFF' },
+            green: { main: '#81C784', light: '#E8F5E9', border: '#C8E6C9', text: '#2E7D32', bg: '#F4F9F4', card: '#FFFFFF' }
+        };
+
         function adjustColorBrightness(hex, percent) {
             let num = parseInt(hex.replace('#',''), 16),
             amt = Math.round(2.55 * percent),
@@ -377,49 +452,110 @@
             return '#' + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
         }
 
-        function setCSSVariables(themeData) {
-            let theme;
-            if (typeof themeData === 'string' && colorPresets[themeData]) {
-                theme = colorPresets[themeData];
-            } else if (typeof themeData === 'object') {
-                theme = themeData;
-            } else if (typeof themeData === 'string' && themeData.startsWith('#')) {
-                theme = {
-                    main: themeData,
-                    light: adjustColorBrightness(themeData, 75),
-                    border: adjustColorBrightness(themeData, 50),
-                    text: adjustColorBrightness(themeData, -20),
-                    bg: adjustColorBrightness(themeData, 85)
-                };
-            } else {
-                theme = colorPresets.pink;
-            }
-
+        // Apply theme settings to CSS Variables and Color Inputs
+        function applyCustomTheme(themeObj) {
+            const theme = { ...defaultTheme, ...themeObj };
             const root = document.documentElement;
+            
             root.style.setProperty('--color-main', theme.main);
-            root.style.setProperty('--color-light', theme.light);
+            root.style.setProperty('--color-light', theme.light || adjustColorBrightness(theme.main, 75));
             root.style.setProperty('--color-border', theme.border);
             root.style.setProperty('--color-text', theme.text);
             root.style.setProperty('--color-bg', theme.bg);
+            root.style.setProperty('--color-card', theme.card || '#FFFFFF');
+
+            // Sync with Modal Inputs
+            syncColorInput('pickerMain', 'textMain', theme.main);
+            syncColorInput('pickerBg', 'textBg', theme.bg);
+            syncColorInput('pickerCard', 'textCard', theme.card || '#FFFFFF');
+            syncColorInput('pickerText', 'textText', theme.text);
+            syncColorInput('pickerBorder', 'textBorder', theme.border);
+        }
+
+        function syncColorInput(pickerId, textId, value) {
+            const picker = document.getElementById(pickerId);
+            const text = document.getElementById(textId);
+            if (picker && text) {
+                picker.value = value;
+                text.value = value.toUpperCase();
+            }
+        }
+
+        // Setup real-time color picker listeners inside Modal
+        function setupColorPickerEvents() {
+            const pairs = [
+                ['pickerMain', 'textMain'],
+                ['pickerBg', 'textBg'],
+                ['pickerCard', 'textCard'],
+                ['pickerText', 'textText'],
+                ['pickerBorder', 'textBorder']
+            ];
+
+            pairs.forEach(([pickerId, textId]) => {
+                const picker = document.getElementById(pickerId);
+                const text = document.getElementById(textId);
+                if (picker && text) {
+                    picker.addEventListener('input', (e) => {
+                        text.value = e.target.value.toUpperCase();
+                        previewColorsFromModal();
+                    });
+                    text.addEventListener('change', (e) => {
+                        let val = e.target.value.trim();
+                        if (!val.startsWith('#')) val = '#' + val;
+                        if (/^#[0-9A-F]{6}$/i.test(val)) {
+                            picker.value = val;
+                            previewColorsFromModal();
+                        }
+                    });
+                }
+            });
+        }
+
+        function previewColorsFromModal() {
+            const tempTheme = {
+                main: document.getElementById('pickerMain').value,
+                bg: document.getElementById('pickerBg').value,
+                card: document.getElementById('pickerCard').value,
+                text: document.getElementById('pickerText').value,
+                border: document.getElementById('pickerBorder').value,
+                light: adjustColorBrightness(document.getElementById('pickerMain').value, 75)
+            };
+            applyCustomTheme(tempTheme);
+        }
+
+        function applyPresetTheme(presetKey) {
+            if (presetThemes[presetKey]) {
+                applyCustomTheme(presetThemes[presetKey]);
+            }
+        }
+
+        function saveAllCustomColors() {
+            const customTheme = {
+                main: document.getElementById('pickerMain').value,
+                bg: document.getElementById('pickerBg').value,
+                card: document.getElementById('pickerCard').value,
+                text: document.getElementById('pickerText').value,
+                border: document.getElementById('pickerBorder').value,
+                light: adjustColorBrightness(document.getElementById('pickerMain').value, 75)
+            };
+
+            applyCustomTheme(customTheme);
+            if (rtdb) {
+                rtdb.ref('site_settings/themeConfig').set(customTheme, (err) => {
+                    if (!err) {
+                        alert('บันทึกการตั้งค่าสีสำเร็จแล้ว!');
+                        closeColorThemeModal();
+                    } else {
+                        alert('เกิดข้อผิดพลาดในการบันทึกสี');
+                    }
+                });
+            } else {
+                closeColorThemeModal();
+            }
         }
 
         function openColorThemeModal() { document.getElementById('colorThemeModal').classList.remove('hidden'); }
         function closeColorThemeModal() { document.getElementById('colorThemeModal').classList.add('hidden'); }
-
-        function applyAndSaveTheme(themeKey) {
-            setCSSVariables(themeKey);
-            if (rtdb) rtdb.ref('site_settings/theme').set(themeKey);
-            closeColorThemeModal();
-        }
-
-        function applyCustomHexColor() {
-            let hex = document.getElementById('customHexInput').value.trim();
-            if (!hex.startsWith('#')) hex = '#' + hex;
-            if (!/^#[0-9A-F]{6}$/i.test(hex)) {
-                return alert('กรุณาระบุโค้ดสี Hex ให้ถูกต้อง เช่น #FF94A8');
-            }
-            applyAndSaveTheme(hex);
-        }
 
         // --- MUSIC TOGGLE ---
         function toggleMusic() {
@@ -450,11 +586,18 @@
                     document.getElementById('storeLogoText').classList.add('hidden');
                 }
                 if (settings.aboutBanner) document.getElementById('aboutBannerImg').src = settings.aboutBanner;
-                if (settings.theme) setCSSVariables(settings.theme);
+                
+                // Load Custom Theme Config from Firebase
+                if (settings.themeConfig) {
+                    applyCustomTheme(settings.themeConfig);
+                } else if (settings.theme && typeof settings.theme === 'string') {
+                    applyPresetTheme(settings.theme);
+                }
             });
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            setupColorPickerEvents();
             updateAdminUI();
         });
 
@@ -590,14 +733,14 @@
 
             approvedContainer.innerHTML = '';
             if (approvedReviews.length === 0) {
-                approvedContainer.innerHTML = `<div class="text-center py-6 text-xs text-gray-400 font-cute">ยังไม่มีรีวิวที่ได้รับการอนุมัติในขณะนี้ค่ะ 🌸</div>`;
+                approvedContainer.innerHTML = `<div class="text-center py-6 text-xs opacity-70 font-cute">ยังไม่มีรีวิวที่ได้รับการอนุมัติในขณะนี้ค่ะ 🌸</div>`;
                 return;
             }
 
             const fragment = document.createDocumentFragment();
             approvedReviews.forEach(r => {
                 const card = document.createElement('div');
-                card.className = 'p-3 bg-white rounded-xl border border-theme-border space-y-1.5 relative shadow-sm hover:shadow-md transition';
+                card.className = 'p-3 bg-white rounded-xl border dynamic-border space-y-1.5 relative shadow-sm hover:shadow-md transition';
                 
                 let hearts = '';
                 const ratingNum = r.rating || 5;
@@ -610,7 +753,7 @@
                             <span class="font-medium text-xs text-gray-800">${r.author || 'ผู้ใช้งาน'}</span>
                             <div class="text-[9px] space-x-0.5">${hearts}</div>
                         </div>
-                        <span class="text-[9px] text-gray-400 font-cute">${r.date || ''}</span>
+                        <span class="text-[9px] opacity-60 font-cute">${r.date || ''}</span>
                     </div>
                     <p class="text-[11px] text-gray-600 leading-relaxed">${r.comment || ''}</p>
                     ${isAdmin ? `<button onclick="deleteReview('${r.id}')" class="absolute bottom-2 right-2 text-rose-300 hover:text-rose-500 text-xs transition"><i class="fa-solid fa-trash"></i></button>` : ''}
