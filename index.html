@@ -24,7 +24,8 @@
                             border: 'var(--color-border, #FFE4E8)',
                             text: 'var(--color-text, #E06D83)',
                             bg: 'var(--color-bg, #FAF4F5)',
-                            card: 'var(--color-card, #FFFFFF)'
+                            card: 'var(--color-card, #FFFFFF)',
+                            header: 'var(--color-header, #FFFFFF)'
                         }
                     },
                     fontFamily: {
@@ -44,6 +45,7 @@
             --color-text: #E06D83;
             --color-bg: #FAF4F5;
             --color-card: #FFFFFF;
+            --color-header: #FFFFFF;
         }
         
         html, body { 
@@ -129,8 +131,8 @@
         </div>
     </div>
 
-    <!-- Header / Navbar -->
-    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b dynamic-border shadow-sm max-w-md mx-auto w-full">
+    <!-- Header / Navbar (อัปเดตให้รองรับสี --color-header) -->
+    <header class="backdrop-blur-md sticky top-0 z-40 border-b dynamic-border shadow-sm max-w-md mx-auto w-full transition-colors duration-300" style="background-color: var(--color-header);">
         <div class="px-4 py-2.5 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <a href="#" class="flex items-center space-x-2 group">
@@ -246,7 +248,7 @@
                     <textarea id="revComment" rows="3" required placeholder="แชร์ความประทับใจได้เลยนะคะ..." class="w-full dynamic-bg-light border dynamic-border rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400"></textarea>
                 </div>
                 <button type="submit" id="submitReviewBtn" class="cute-btn w-full py-2 rounded-full font-medium shadow-md">
-                    ส่งรีวิวให้แอนมินอนุมัติ 🌸✨
+                    ส่งรีวิวให้แอดมินอนุมัติ 🌸✨
                 </button>
             </form>
         </div>
@@ -281,7 +283,18 @@
             <div class="space-y-2.5 text-xs">
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
                     <div>
-                        <span class="font-medium block text-gray-700 text-[11px]">1. สีหลัก (Main/Button Color)</span>
+                        <span class="font-medium block text-gray-700 text-[11px]">1. สีแถบด้านบน (Header Color)</span>
+                        <span class="text-[9px] text-gray-400">พื้นหลังของแถบโลโก้และปุ่มแอดมิน</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <input type="color" id="pickerHeader" class="w-7 h-7 rounded-lg cursor-pointer border-none bg-transparent">
+                        <input type="text" id="textHeader" class="w-16 text-[10px] text-center border rounded py-0.5 font-mono">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
+                    <div>
+                        <span class="font-medium block text-gray-700 text-[11px]">2. สีหลัก (Main/Button Color)</span>
                         <span class="text-[9px] text-gray-400">ปุ่มกด, แบนเนอร์แอดมิน, สโคลล์บาร์</span>
                     </div>
                     <div class="flex items-center space-x-1.5">
@@ -292,7 +305,7 @@
 
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
                     <div>
-                        <span class="font-medium block text-gray-700 text-[11px]">2. สีพื้นหลังเว็บ (Background Color)</span>
+                        <span class="font-medium block text-gray-700 text-[11px]">3. สีพื้นหลังเว็บ (Background Color)</span>
                         <span class="text-[9px] text-gray-400">พื้นหลังของหน้าเว็บไซต์ทั้งหมด</span>
                     </div>
                     <div class="flex items-center space-x-1.5">
@@ -303,7 +316,7 @@
 
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
                     <div>
-                        <span class="font-medium block text-gray-700 text-[11px]">3. สีกล่องและ การ์ด (Card BG Color)</span>
+                        <span class="font-medium block text-gray-700 text-[11px]">4. สีกล่องและ การ์ด (Card BG Color)</span>
                         <span class="text-[9px] text-gray-400">พื้นหลังการ์ดรีวิวและกล่องเนื้อหา</span>
                     </div>
                     <div class="flex items-center space-x-1.5">
@@ -314,7 +327,7 @@
 
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
                     <div>
-                        <span class="font-medium block text-gray-700 text-[11px]">4. สีข้อความและไอคอน (Text Color)</span>
+                        <span class="font-medium block text-gray-700 text-[11px]">5. สีข้อความและไอคอน (Text Color)</span>
                         <span class="text-[9px] text-gray-400">หัวข้อ ตัวหนังสือ และไอคอนต่างๆ</span>
                     </div>
                     <div class="flex items-center space-x-1.5">
@@ -325,7 +338,7 @@
 
                 <div class="flex items-center justify-between bg-gray-50 p-2 rounded-xl border border-gray-200">
                     <div>
-                        <span class="font-medium block text-gray-700 text-[11px]">5. สีเส้นขอบ (Border Color)</span>
+                        <span class="font-medium block text-gray-700 text-[11px]">6. สีเส้นขอบ (Border Color)</span>
                         <span class="text-[9px] text-gray-400">เส้นขอบการ์ด กล่องปุ่มกด และ Input</span>
                     </div>
                     <div class="flex items-center space-x-1.5">
@@ -428,6 +441,7 @@
         let isPlaying = false;
 
         const defaultTheme = {
+            header: '#FFFFFF',
             main: '#FF94A8',
             light: '#FFF0F3',
             border: '#FFE4E8',
@@ -437,10 +451,10 @@
         };
 
         const presetThemes = {
-            pink: { main: '#FF94A8', light: '#FFF0F3', border: '#FFE4E8', text: '#E06D83', bg: '#FAF4F5', card: '#FFFFFF' },
-            blue: { main: '#52B2BF', light: '#E8F8F5', border: '#B2EBF2', text: '#2B7A78', bg: '#F4F9F9', card: '#FFFFFF' },
-            purple: { main: '#B39DDB', light: '#F3E5F5', border: '#E1BEE7', text: '#6A1B9A', bg: '#FAF5FB', card: '#FFFFFF' },
-            green: { main: '#81C784', light: '#E8F5E9', border: '#C8E6C9', text: '#2E7D32', bg: '#F4F9F4', card: '#FFFFFF' }
+            pink: { header: '#FFFFFF', main: '#FF94A8', light: '#FFF0F3', border: '#FFE4E8', text: '#E06D83', bg: '#FAF4F5', card: '#FFFFFF' },
+            blue: { header: '#FFFFFF', main: '#52B2BF', light: '#E8F8F5', border: '#B2EBF2', text: '#2B7A78', bg: '#F4F9F9', card: '#FFFFFF' },
+            purple: { header: '#FFFFFF', main: '#B39DDB', light: '#F3E5F5', border: '#E1BEE7', text: '#6A1B9A', bg: '#FAF5FB', card: '#FFFFFF' },
+            green: { header: '#FFFFFF', main: '#81C784', light: '#E8F5E9', border: '#C8E6C9', text: '#2E7D32', bg: '#F4F9F4', card: '#FFFFFF' }
         };
 
         function adjustColorBrightness(hex, percent) {
@@ -457,6 +471,7 @@
             const theme = { ...defaultTheme, ...themeObj };
             const root = document.documentElement;
             
+            root.style.setProperty('--color-header', theme.header || '#FFFFFF');
             root.style.setProperty('--color-main', theme.main);
             root.style.setProperty('--color-light', theme.light || adjustColorBrightness(theme.main, 75));
             root.style.setProperty('--color-border', theme.border);
@@ -465,6 +480,7 @@
             root.style.setProperty('--color-card', theme.card || '#FFFFFF');
 
             // Sync with Modal Inputs
+            syncColorInput('pickerHeader', 'textHeader', theme.header || '#FFFFFF');
             syncColorInput('pickerMain', 'textMain', theme.main);
             syncColorInput('pickerBg', 'textBg', theme.bg);
             syncColorInput('pickerCard', 'textCard', theme.card || '#FFFFFF');
@@ -484,6 +500,7 @@
         // Setup real-time color picker listeners inside Modal
         function setupColorPickerEvents() {
             const pairs = [
+                ['pickerHeader', 'textHeader'],
                 ['pickerMain', 'textMain'],
                 ['pickerBg', 'textBg'],
                 ['pickerCard', 'textCard'],
@@ -513,6 +530,7 @@
 
         function previewColorsFromModal() {
             const tempTheme = {
+                header: document.getElementById('pickerHeader').value,
                 main: document.getElementById('pickerMain').value,
                 bg: document.getElementById('pickerBg').value,
                 card: document.getElementById('pickerCard').value,
@@ -531,6 +549,7 @@
 
         function saveAllCustomColors() {
             const customTheme = {
+                header: document.getElementById('pickerHeader').value,
                 main: document.getElementById('pickerMain').value,
                 bg: document.getElementById('pickerBg').value,
                 card: document.getElementById('pickerCard').value,
