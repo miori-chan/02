@@ -107,7 +107,9 @@
 
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-pink-100 flex items-center justify-between">
                 <div>
-                    <h3 class="font-heading text-sm text-pastel-darkpink font-medium">💬 รีวิวจากลูกค้า</h3>
+                    <h3 class="font-heading text-sm text-pastel-darkpink font-medium flex items-center gap-1.5">
+                        <i class="fa-solid fa-comments"></i> รีวิวจากลูกค้า
+                    </h3>
                     <p class="text-[10px] text-gray-400">แบ่งปันความประทับใจของคุณได้ที่นี่ค่ะ</p>
                 </div>
                 <button id="writeReviewBtn" onclick="toggleWriteReviewModal()" class="bg-pastel-darkpink hover:bg-pastel-deepness text-white text-[11px] px-3 py-1.5 rounded-full font-medium transition shadow-sm flex items-center space-x-1 shrink-0">
@@ -116,19 +118,19 @@
                 </button>
             </div>
 
-            <!-- ADMIN MODERATION SECTION -->
+            <!-- ADMIN MODERATION SECTION (แอดมินเห็นคนเดียว) -->
             <div id="adminModerationSection" class="hidden bg-amber-50/90 border border-amber-200 rounded-2xl p-4 shadow-sm space-y-3">
                 <div class="flex items-center justify-between border-b border-amber-200/60 pb-2">
                     <div class="flex items-center space-x-2">
                         <span class="bg-amber-400 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">ADMIN ONLY</span>
-                        <h4 class="font-heading text-xs text-amber-900 font-medium">รอการอนุมัติ</h4>
+                        <h4 class="font-heading text-xs text-amber-900 font-medium">รอการอนุมัติ (รูปหลักฐานเห็นเฉพาะแอดมิน)</h4>
                     </div>
                     <span id="pendingCountBadge" class="text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full font-bold">0 รายการ</span>
                 </div>
                 <div id="pendingReviewsContainer" class="space-y-2"></div>
             </div>
 
-            <!-- APPROVED REVIEWS FEED -->
+            <!-- APPROVED REVIEWS FEED (คนทั่วไปเห็น) -->
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-pink-100 space-y-4">
                 <div class="flex items-center justify-between border-b border-pink-50 pb-2">
                     <span id="approvedCountText" class="text-[11px] text-gray-400">ทั้งหมด 0 รีวิว</span>
@@ -147,7 +149,7 @@
             <div class="text-center space-y-1">
                 <span class="text-xl">📝✨</span>
                 <h3 class="font-heading text-base text-pastel-darkpink font-medium">เขียนรีวิวสินค้า</h3>
-                <p class="text-[10px] text-gray-400">แนบรูปภาพสินค้า/สลิปจากอัลบั้มมือถือ</p>
+                <p class="text-[10px] text-gray-400">กรอกข้อมูลความประทับใจของคุณได้เลยค่ะ</p>
             </div>
             <form onsubmit="handleCustomerSubmitReview(event)" class="space-y-2.5 text-xs">
                 <div>
@@ -166,14 +168,7 @@
                 </div>
                 <div>
                     <label class="block text-gray-600 font-medium mb-1">ข้อความรีวิว</label>
-                    <textarea id="revComment" rows="2" required placeholder="แชร์ความประทับใจ..." class="w-full bg-pastel-lightpink/30 border border-pink-200 rounded-xl px-3 py-1.5 focus:outline-none focus:border-pastel-darkpink"></textarea>
-                </div>
-                <div>
-                    <label class="block text-gray-600 font-medium mb-1">แนบรูปหลักฐาน</label>
-                    <input type="file" id="revImageFile" accept="image/*" onchange="previewReviewImage(event)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-[10px] file:bg-pastel-pink file:text-pastel-darkpink">
-                    <div id="revImagePreview" class="hidden mt-2 relative w-16 h-16 border border-pink-200 rounded-xl overflow-hidden">
-                        <img src="" id="imgPreviewTag" class="w-full h-full object-cover">
-                    </div>
+                    <textarea id="revComment" rows="3" required placeholder="แชร์ความประทับใจ..." class="w-full bg-pastel-lightpink/30 border border-pink-200 rounded-xl px-3 py-1.5 focus:outline-none focus:border-pastel-darkpink"></textarea>
                 </div>
                 <button type="submit" id="submitReviewBtn" class="w-full bg-pastel-darkpink hover:bg-pastel-deepness text-white py-2 rounded-full font-medium transition shadow-md">
                     ส่งรีวิวให้แอดมินอนุมัติ 🌸
@@ -266,7 +261,6 @@
         let reviews = [];
         let isAdmin = localStorage.getItem('pinkie_is_admin') === 'true';
         let currentSelectedRating = 5;
-        let currentUploadedImageBase64 = null;
         let isPlaying = false;
 
         // --- MUSIC TOGGLE FUNCTION ---
@@ -357,13 +351,6 @@
                 btn.className = idx < r ? 'star-btn text-amber-400' : 'star-btn text-gray-200';
             });
         }
-        function previewReviewImage(event) {
-            handleImageUpload(event, (base64) => {
-                currentUploadedImageBase64 = base64;
-                document.getElementById('imgPreviewTag').src = base64;
-                document.getElementById('revImagePreview').classList.remove('hidden');
-            });
-        }
         function toggleWriteReviewModal() {
             document.getElementById('reviewModal').classList.toggle('hidden');
         }
@@ -380,7 +367,6 @@
                 author,
                 rating: currentSelectedRating,
                 comment,
-                image: currentUploadedImageBase64 || null,
                 status: 'pending',
                 date: new Date().toISOString().split('T')[0]
             }, (err) => {
@@ -390,9 +376,6 @@
                     toggleWriteReviewModal();
                     document.getElementById('revAuthor').value = '';
                     document.getElementById('revComment').value = '';
-                    document.getElementById('revImageFile').value = '';
-                    document.getElementById('revImagePreview').classList.add('hidden');
-                    currentUploadedImageBase64 = null;
                     alert('ส่งรีวิวเรียบร้อยแล้วค่ะ! รอแอดมินตรวจสอบและอนุมัตินะคะ ✨');
                 } else {
                     alert('เกิดข้อผิดพลาดในการส่งรีวิว กรุณาลองใหม่อีกครั้ง');
@@ -433,7 +416,7 @@
                                     <span class="text-[9px] text-gray-400">${r.date || ''}</span>
                                 </div>
                                 <p class="text-gray-600 text-[11px]">${r.comment || ''}</p>
-                                ${r.image ? `<a href="${r.image}" target="_blank" class="inline-block text-[10px] text-pastel-darkpink underline"><i class="fa-solid fa-image"></i> ดูรูปแนบ</a>` : ''}
+                                ${r.image ? `<div class="mt-1"><span class="text-[9px] font-bold text-amber-700 block mb-0.5">รูปหลักฐาน (แอดมินเห็นคนเดียว):</span><a href="${r.image}" target="_blank"><img src="${r.image}" class="w-16 h-16 object-cover rounded-lg border border-amber-300"></a></div>` : ''}
                             </div>
                             <div class="flex items-center space-x-2 justify-end">
                                 <button onclick="approveReview('${r.id}')" class="bg-emerald-500 hover:bg-emerald-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-medium"><i class="fa-solid fa-check"></i> อนุมัติ</button>
@@ -473,7 +456,6 @@
                         <span class="text-[9px] text-gray-400">${r.date || ''}</span>
                     </div>
                     <p class="text-[11px] text-gray-600">${r.comment || ''}</p>
-                    ${r.image ? `<img src="${r.image}" class="w-20 h-20 object-cover rounded-lg border border-pink-200" onerror="this.style.display='none'">` : ''}
                     ${isAdmin ? `<button onclick="deleteReview('${r.id}')" class="absolute bottom-2 right-2 text-rose-400 hover:text-rose-600 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
                 `;
                 fragment.appendChild(card);
