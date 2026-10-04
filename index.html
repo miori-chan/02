@@ -191,7 +191,7 @@
         </section>
     </main>
 
-    <!-- WRITE REVIEW MODAL (เปลี่ยนไอคอนดาวเป็นหัวใจ) -->
+    <!-- WRITE REVIEW MODAL -->
     <div id="reviewModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 border-theme-border relative space-y-3">
             <button onclick="toggleWriteReviewModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400 transition">
@@ -228,30 +228,48 @@
         </div>
     </div>
 
-    <!-- MODAL: เปลี่ยนโทนสีเว็บไซต์ (เฉพาะแอดมิน) -->
+    <!-- MODAL: เปลี่ยนโทนสีเว็บไซต์ (เพิ่มการระบุโค้ดสีเอง) -->
     <div id="colorThemeModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 border-theme-border relative space-y-3">
             <button onclick="closeColorThemeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
             <h3 class="font-heading text-sm text-theme-text font-medium flex items-center gap-1.5">
-                <i class="fa-solid fa-palette"></i> เลือกโทนสีเว็บไซต์
+                <i class="fa-solid fa-palette"></i> เลือกหรือระบุโทนสีเว็บไซต์
             </h3>
-            <div class="grid grid-cols-2 gap-2 pt-2">
-                <button onclick="applyAndSaveTheme('pink')" class="p-2.5 rounded-2xl border-2 border-pink-300 bg-pink-50 hover:bg-pink-100 flex items-center space-x-2 text-xs font-medium text-pink-600">
-                    <span class="w-4 h-4 rounded-full bg-pink-400 inline-block"></span>
-                    <span>ชมพูพาสเทล</span>
-                </button>
-                <button onclick="applyAndSaveTheme('blue')" class="p-2.5 rounded-2xl border-2 border-sky-300 bg-sky-50 hover:bg-sky-100 flex items-center space-x-2 text-xs font-medium text-sky-600">
-                    <span class="w-4 h-4 rounded-full bg-sky-400 inline-block"></span>
-                    <span>ฟ้าพาสเทล</span>
-                </button>
-                <button onclick="applyAndSaveTheme('purple')" class="p-2.5 rounded-2xl border-2 border-purple-300 bg-purple-50 hover:bg-purple-100 flex items-center space-x-2 text-xs font-medium text-purple-600">
-                    <span class="w-4 h-4 rounded-full bg-purple-400 inline-block"></span>
-                    <span>ม่วงพาสเทล</span>
-                </button>
-                <button onclick="applyAndSaveTheme('green')" class="p-2.5 rounded-2xl border-2 border-emerald-300 bg-emerald-50 hover:bg-emerald-100 flex items-center space-x-2 text-xs font-medium text-emerald-600">
-                    <span class="w-4 h-4 rounded-full bg-emerald-400 inline-block"></span>
-                    <span>เขียวมินต์</span>
-                </button>
+            
+            <div class="space-y-3 text-xs">
+                <!-- Preset Themes -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="applyAndSaveTheme('pink')" class="p-2 rounded-xl border border-pink-300 bg-pink-50 hover:bg-pink-100 flex items-center space-x-1.5 text-[11px] font-medium text-pink-600">
+                        <span class="w-3.5 h-3.5 rounded-full bg-pink-400 inline-block shrink-0"></span>
+                        <span>ชมพูพาสเทล</span>
+                    </button>
+                    <button onclick="applyAndSaveTheme('blue')" class="p-2 rounded-xl border border-sky-300 bg-sky-50 hover:bg-sky-100 flex items-center space-x-1.5 text-[11px] font-medium text-sky-600">
+                        <span class="w-3.5 h-3.5 rounded-full bg-sky-400 inline-block shrink-0"></span>
+                        <span>ฟ้าพาสเทล</span>
+                    </button>
+                    <button onclick="applyAndSaveTheme('purple')" class="p-2 rounded-xl border border-purple-300 bg-purple-50 hover:bg-purple-100 flex items-center space-x-1.5 text-[11px] font-medium text-purple-600">
+                        <span class="w-3.5 h-3.5 rounded-full bg-purple-400 inline-block shrink-0"></span>
+                        <span>ม่วงพาสเทล</span>
+                    </button>
+                    <button onclick="applyAndSaveTheme('green')" class="p-2 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 flex items-center space-x-1.5 text-[11px] font-medium text-emerald-600">
+                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 inline-block shrink-0"></span>
+                        <span>เขียวมินต์</span>
+                    </button>
+                </div>
+
+                <div class="text-center text-gray-400 font-bold text-[10px] my-1">- หรือกำหนดโค้ดสีเอง -</div>
+
+                <!-- Custom Color Input -->
+                <div class="space-y-2 bg-theme-light/40 p-2.5 rounded-2xl border border-theme-border">
+                    <label class="block text-gray-600 font-medium text-[11px]">เลือกหรือพิมพ์โค้ดสี Hex 🎨</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" id="customColorPicker" value="#FF94A8" onchange="document.getElementById('customHexInput').value = this.value" class="w-8 h-8 rounded-lg cursor-pointer border-none bg-transparent shrink-0">
+                        <input type="text" id="customHexInput" placeholder="#FF94A8" value="#FF94A8" onchange="document.getElementById('customColorPicker').value = this.value" class="w-full bg-white border border-theme-border rounded-xl px-2.5 py-1 text-xs text-center font-mono focus:outline-none focus:border-theme-main">
+                    </div>
+                    <button onclick="applyCustomHexColor()" class="cute-btn w-full bg-theme-main text-white py-1.5 rounded-xl text-xs font-medium shadow-sm">
+                        นำเสนอและบันทึกสีนี้ 🎨
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -349,8 +367,34 @@
             green: { main: '#81C784', light: '#E8F5E9', border: '#C8E6C9', text: '#2E7D32', bg: '#F4F9F4' }
         };
 
-        function setCSSVariables(themeKey) {
-            const theme = colorPresets[themeKey] || colorPresets.pink;
+        // ฟังก์ชันช่วยปรับความสว่างของสีสำหรับสร้างสีอ่อน/เข้ม
+        function adjustColorBrightness(hex, percent) {
+            let num = parseInt(hex.replace('#',''), 16),
+            amt = Math.round(2.55 * percent),
+            R = (num >> 16) + amt,
+            G = (num >> 8 & 0x00FF) + amt,
+            B = (num & 0x0000FF) + amt;
+            return '#' + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
+        }
+
+        function setCSSVariables(themeData) {
+            let theme;
+            if (typeof themeData === 'string' && colorPresets[themeData]) {
+                theme = colorPresets[themeData];
+            } else if (typeof themeData === 'object') {
+                theme = themeData;
+            } else if (typeof themeData === 'string' && themeData.startsWith('#')) {
+                theme = {
+                    main: themeData,
+                    light: adjustColorBrightness(themeData, 75),
+                    border: adjustColorBrightness(themeData, 50),
+                    text: adjustColorBrightness(themeData, -20),
+                    bg: adjustColorBrightness(themeData, 85)
+                };
+            } else {
+                theme = colorPresets.pink;
+            }
+
             const root = document.documentElement;
             root.style.setProperty('--color-main', theme.main);
             root.style.setProperty('--color-light', theme.light);
@@ -366,6 +410,15 @@
             setCSSVariables(themeKey);
             if (rtdb) rtdb.ref('site_settings/theme').set(themeKey);
             closeColorThemeModal();
+        }
+
+        function applyCustomHexColor() {
+            let hex = document.getElementById('customHexInput').value.trim();
+            if (!hex.startsWith('#')) hex = '#' + hex;
+            if (!/^#[0-9A-F]{6}$/i.test(hex)) {
+                return alert('กรุณาระบุโค้ดสี Hex ให้ถูกต้อง เช่น #FF94A8');
+            }
+            applyAndSaveTheme(hex);
         }
 
         // --- MUSIC TOGGLE ---
@@ -443,7 +496,7 @@
             closeBannerModal();
         }
 
-        // --- 5. REVIEWS SYSTEM (เปลี่ยนเป็นหัวใจ) ---
+        // --- 5. REVIEWS SYSTEM ---
         function setSelectRating(r) {
             currentSelectedRating = r;
             document.querySelectorAll('#starSelector .heart-btn').forEach((btn, idx) => {
