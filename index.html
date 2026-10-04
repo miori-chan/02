@@ -6,10 +6,10 @@
     <title>Pinkie Studio - รีวิวสินค้า</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Kanit & Mitr -->
+    <!-- Google Fonts: Kanit, Mitr & Itim (เพิ่มความน่ารักให้ตัวหนังสือ) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Mitr:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Itim&family=Kanit:wght@300;400;500;600&family=Mitr:wght@300;400;500&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -32,7 +32,8 @@
                     },
                     fontFamily: {
                         sans: ['Kanit', 'sans-serif'],
-                        heading: ['Mitr', 'sans-serif']
+                        heading: ['Mitr', 'sans-serif'],
+                        cute: ['Itim', 'cursive']
                     }
                 }
             }
@@ -41,11 +42,34 @@
     <style>
         body { background-color: #FAF4F5; font-family: 'Kanit', sans-serif; }
         .font-heading { font-family: 'Mitr', sans-serif; }
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        .font-cute { font-family: 'Itim', cursive; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: #FFF0F3; }
         ::-webkit-scrollbar-thumb { background: #FFB6C1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #FF94A8; }
         .aspect-banner { aspect-ratio: 1122 / 495; }
+        
+        /* เพิ่มเอฟเฟกต์ความน่ารักนุ่มนวลให้การ์ดและปุ่ม */
+        .cute-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 2px solid #FFE4E8;
+            box-shadow: 0 8px 20px -6px rgba(255, 182, 193, 0.3);
+            border-radius: 1.25rem;
+        }
+        .cute-btn {
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .cute-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 15px rgba(224, 109, 131, 0.3);
+        }
+        .star-btn {
+            transition: transform 0.2s ease;
+        }
+        .star-btn:hover {
+            transform: scale(1.25) rotate(8deg);
+        }
     </style>
 </head>
 <body class="text-gray-700 min-h-screen flex flex-col justify-between">
@@ -55,40 +79,40 @@
     </audio>
 
     <!-- Admin Top Banner -->
-    <div id="adminBanner" class="hidden bg-pastel-deepness text-white py-2 px-4 text-center text-xs font-medium shadow-md flex justify-between items-center transition-all duration-300 max-w-md mx-auto w-full">
+    <div id="adminBanner" class="hidden bg-pastel-deepness text-white py-2 px-4 text-center text-xs font-medium shadow-md flex justify-between items-center transition-all duration-300 max-w-md mx-auto w-full rounded-b-xl">
         <div class="flex items-center space-x-2">
-            <span class="bg-white text-pastel-darkpink text-[10px] px-2 py-0.5 rounded-full font-bold">ADMIN MODE</span>
-            <span class="text-[11px] truncate">จัดการอนุมัติและรีวิวสินค้า</span>
+            <span class="bg-white text-pastel-darkpink text-[10px] px-2.5 py-0.5 rounded-full font-bold shadow-sm">ADMIN MODE</span>
+            <span class="text-[11px] truncate">✨ จัดการอนุมัติและรีวิวสินค้า</span>
         </div>
-        <button onclick="logoutAdmin()" class="bg-white/20 hover:bg-white/30 text-white text-[10px] px-2.5 py-1 rounded-full transition duration-200 shrink-0">
+        <button onclick="logoutAdmin()" class="bg-white/20 hover:bg-white/30 text-white text-[10px] px-2.5 py-1 rounded-full transition duration-200 shrink-0 border border-white/30">
             <i class="fa-solid fa-sign-out-alt mr-1"></i> ออก
         </button>
     </div>
 
     <!-- Header / Navbar -->
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-pastel-pink/40 shadow-sm max-w-md mx-auto w-full">
+    <header class="bg-white/85 backdrop-blur-md sticky top-0 z-40 border-b border-pastel-pink/50 shadow-sm max-w-md mx-auto w-full">
         <div class="px-4 py-2.5 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <a href="#" class="flex items-center space-x-2 group">
-                    <div class="w-9 h-9 rounded-full bg-pastel-pink flex items-center justify-center text-pastel-darkpink text-lg font-bold shadow-inner group-hover:scale-105 transition overflow-hidden shrink-0">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-pastel-pink to-pink-100 flex items-center justify-center text-pastel-darkpink text-lg font-bold shadow-inner group-hover:scale-105 transition overflow-hidden shrink-0 border border-pink-200">
                         <img id="storeLogoImg" src="" class="w-full h-full object-cover hidden" alt="Logo">
                         <span id="storeLogoText">🌸</span>
                     </div>
                     <div>
                         <span id="storeNameText" class="font-heading text-base font-medium text-pastel-darkpink tracking-wide block leading-tight">Pinkie Studio</span>
-                        <span class="block text-[9px] text-pink-400 tracking-wider">REVIEWS PAGE</span>
+                        <span class="block text-[9px] text-pink-400 tracking-wider font-cute">💖 REVIEWS & FEEDBACK PAGE 💖</span>
                     </div>
                 </a>
-                <button id="changeLogoBtn" onclick="openLogoModal()" class="hidden text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-lg hover:bg-amber-200 ml-1">
+                <button id="changeLogoBtn" onclick="openLogoModal()" class="hidden text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-lg hover:bg-amber-200 ml-1 shadow-sm">
                     <i class="fa-solid fa-camera"></i>
                 </button>
             </div>
 
             <div class="flex items-center space-x-2">
-                <button id="musicToggleBtn" onclick="toggleMusic()" class="relative text-pastel-darkpink hover:bg-pastel-pink transition bg-pastel-lightpink rounded-full w-8 h-8 flex items-center justify-center shadow-sm shrink-0">
+                <button id="musicToggleBtn" onclick="toggleMusic()" class="relative text-pastel-darkpink hover:bg-pastel-pink transition bg-pastel-lightpink rounded-full w-8 h-8 flex items-center justify-center shadow-sm shrink-0 border border-pink-200">
                     <i id="musicIcon" class="fa-solid fa-music text-xs"></i>
                 </button>
-                <button id="adminLoginBtn" onclick="openAdminModal()" class="text-xs bg-pastel-pink/50 hover:bg-pastel-pink text-pastel-darkpink h-8 px-3 rounded-full font-medium transition flex items-center space-x-1 shrink-0">
+                <button id="adminLoginBtn" onclick="openAdminModal()" class="text-xs bg-pastel-pink/50 hover:bg-pastel-pink text-pastel-darkpink h-8 px-3 rounded-full font-medium transition flex items-center space-x-1 shrink-0 border border-pastel-pink">
                     <i class="fa-solid fa-lock text-[10px]"></i> <span id="adminBtnText">แอดมิน</span>
                 </button>
             </div>
@@ -98,42 +122,42 @@
     <!-- MAIN CONTENT (REVIEWS ONLY) -->
     <main class="max-w-md mx-auto px-3 py-4 flex-grow w-full">
         <section id="page-reviews" class="space-y-4 max-w-md mx-auto">
-            <div class="relative w-full aspect-banner bg-pastel-lightpink rounded-2xl overflow-hidden border border-pink-100 shadow-sm group">
+            <div class="relative w-full aspect-banner bg-pastel-lightpink rounded-2xl overflow-hidden border-2 border-pink-100 shadow-sm group">
                 <img id="aboutBannerImg" src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=1200&auto=format&fit=crop&q=80" class="w-full h-full object-cover">
-                <button id="editAboutBannerBtn" onclick="openBannerModal('about')" class="hidden absolute top-2 right-2 bg-white/90 text-amber-600 px-2 py-1 rounded-full text-[10px] font-medium shadow hover:bg-white flex items-center space-x-1">
+                <button id="editAboutBannerBtn" onclick="openBannerModal('about')" class="hidden absolute top-2 right-2 bg-white/90 text-amber-600 px-2.5 py-1 rounded-full text-[10px] font-medium shadow hover:bg-white flex items-center space-x-1">
                     <i class="fa-solid fa-camera"></i> <span>เปลี่ยนแบนเนอร์ (1122x495)</span>
                 </button>
             </div>
 
-            <!-- ส่วนหัวข้อรีวิว พร้อมสรุปคะแนนและจำนวนผู้รีวิว -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-pink-100 flex items-center justify-between">
+            <!-- ส่วนหัวข้อรีวิว พร้อมสรุปรีวิวและจำนวนผู้รีวิว -->
+            <div class="cute-card p-4 flex items-center justify-between">
                 <div>
                     <h3 class="font-heading text-sm text-pastel-darkpink font-medium flex items-center gap-1.5">
-                        <i class="fa-solid fa-comments"></i> รีวิวจากลูกค้า
+                        <i class="fa-solid fa-heart text-rose-400 animate-pulse"></i> รีวิวจากลูกค้าสุดน่ารัก
                     </h3>
                     <div class="flex items-center space-x-3 text-xs text-gray-500 mt-1 font-medium">
-                        <span class="flex items-center text-rose-500 gap-1">
-                            <i class="fa-solid fa-heart"></i>
-                            <span id="avgRatingText" class="font-bold text-gray-700">0.0</span>
+                        <span class="flex items-center text-rose-500 gap-1 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100">
+                            <i class="fa-solid fa-heart text-[10px]"></i>
+                            <span id="avgRatingText" class="font-bold text-rose-600">0.0</span>
                         </span>
-                        <span class="text-gray-300">|</span>
-                        <span class="flex items-center text-pastel-darkpink gap-1">
-                            <i class="fa-solid fa-user"></i>
-                            <span id="reviewersCountText" class="text-gray-700">0 คน</span>
+                        <span class="text-pink-200">|</span>
+                        <span class="flex items-center text-pastel-darkpink gap-1 bg-pink-50 px-2 py-0.5 rounded-full border border-pink-100">
+                            <i class="fa-solid fa-user text-[10px]"></i>
+                            <span id="reviewersCountText" class="text-pastel-darkpink font-bold">0 คน</span>
                         </span>
                     </div>
                 </div>
-                <button id="writeReviewBtn" onclick="toggleWriteReviewModal()" class="bg-pastel-darkpink hover:bg-pastel-deepness text-white text-[11px] px-3 py-1.5 rounded-full font-medium transition shadow-sm flex items-center space-x-1 shrink-0">
-                    <i class="fa-solid fa-pen text-[9px]"></i>
+                <button id="writeReviewBtn" onclick="toggleWriteReviewModal()" class="cute-btn bg-gradient-to-r from-pastel-darkpink to-pastel-deepness text-white text-[11px] px-3.5 py-2 rounded-full font-medium shadow-md flex items-center space-x-1 shrink-0 border border-white/40">
+                    <i class="fa-solid fa-pen-nib text-[10px]"></i>
                     <span>+ เขียนรีวิว</span>
                 </button>
             </div>
 
             <!-- ADMIN MODERATION SECTION (แอดมินเห็นคนเดียว) -->
-            <div id="adminModerationSection" class="hidden bg-amber-50/90 border border-amber-200 rounded-2xl p-4 shadow-sm space-y-3">
-                <div class="flex items-center justify-between border-b border-amber-200/60 pb-2">
+            <div id="adminModerationSection" class="hidden bg-amber-50/95 border-2 border-amber-200 rounded-2xl p-4 shadow-sm space-y-3">
+                <div class="flex items-center justify-between border-b border-amber-200/80 pb-2">
                     <div class="flex items-center space-x-2">
-                        <span class="bg-amber-400 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">ADMIN ONLY</span>
+                        <span class="bg-amber-400 text-white text-[9px] px-2 py-0.5 rounded-full font-bold shadow-sm">ADMIN ONLY</span>
                         <h4 class="font-heading text-xs text-amber-900 font-medium">รอการอนุมัติ (รูปหลักฐานเห็นเฉพาะแอดมิน)</h4>
                     </div>
                     <span id="pendingCountBadge" class="text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full font-bold">0 รายการ</span>
@@ -142,9 +166,9 @@
             </div>
 
             <!-- APPROVED REVIEWS FEED (คนทั่วไปเห็น) -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-pink-100 space-y-4">
-                <div class="flex items-center justify-between border-b border-pink-50 pb-2">
-                    <span id="approvedCountText" class="text-[11px] text-gray-400">ทั้งหมด 0 รีวิว</span>
+            <div class="cute-card p-4 space-y-4">
+                <div class="flex items-center justify-between border-b border-pink-100 pb-2">
+                    <span id="approvedCountText" class="text-[11px] text-gray-400 font-cute">ทั้งหมด 0 รีวิว 🌷</span>
                 </div>
                 <div id="approvedReviewsContainer" class="space-y-3"></div>
             </div>
@@ -153,23 +177,23 @@
 
     <!-- WRITE REVIEW MODAL -->
     <div id="reviewModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-xl border border-pink-100 relative space-y-3">
-            <button onclick="toggleWriteReviewModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-xmark text-lg"></i>
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 border-pink-200 relative space-y-3">
+            <button onclick="toggleWriteReviewModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400 transition">
+                <i class="fa-solid fa-circle-xmark text-xl"></i>
             </button>
             <div class="text-center space-y-1">
-                <span class="text-xl">📝✨</span>
+                <span class="text-2xl animate-bounce inline-block">📝✨</span>
                 <h3 class="font-heading text-base text-pastel-darkpink font-medium">เขียนรีวิวสินค้า</h3>
-                <p class="text-[10px] text-gray-400">กรอกข้อมูลความประทับใจของคุณได้เลยค่ะ</p>
+                <p class="text-[10px] text-pink-400 font-cute">แชร์ความน่ารักและความประทับใจของคุณให้เราฟังหน่อยน้า</p>
             </div>
-            <form onsubmit="handleCustomerSubmitReview(event)" class="space-y-2.5 text-xs">
+            <form onsubmit="handleCustomerSubmitReview(event)" class="space-y-3 text-xs">
                 <div>
-                    <label class="block text-gray-600 font-medium mb-1">ชื่อผู้รีวิว</label>
-                    <input type="text" id="revAuthor" required placeholder="ใส่ชื่อของคุณ..." class="w-full bg-pastel-lightpink/30 border border-pink-200 rounded-xl px-3 py-1.5 focus:outline-none focus:border-pastel-darkpink">
+                    <label class="block text-gray-600 font-medium mb-1">ชื่อผู้รีวิว 🌸</label>
+                    <input type="text" id="revAuthor" required placeholder="ใส่ชื่อน่ารักๆ ของคุณ..." class="w-full bg-pastel-lightpink/40 border border-pink-200 rounded-xl px-3 py-1.5 focus:outline-none focus:border-pastel-darkpink text-xs">
                 </div>
                 <div>
-                    <label class="block text-gray-600 font-medium mb-1">ให้คะแนนสินค้า</label>
-                    <div class="flex space-x-2 text-base text-amber-300" id="starSelector">
+                    <label class="block text-gray-600 font-medium mb-1">การให้รีวิว (ระดับความประทับใจ) 💕</label>
+                    <div class="flex space-x-2 text-lg text-amber-300 justify-center py-1 bg-pink-50/50 rounded-xl border border-pink-100" id="starSelector">
                         <button type="button" onclick="setSelectRating(1)" class="star-btn text-amber-400"><i class="fa-solid fa-star"></i></button>
                         <button type="button" onclick="setSelectRating(2)" class="star-btn text-amber-400"><i class="fa-solid fa-star"></i></button>
                         <button type="button" onclick="setSelectRating(3)" class="star-btn text-amber-400"><i class="fa-solid fa-star"></i></button>
@@ -178,11 +202,11 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-gray-600 font-medium mb-1">ข้อความรีวิว</label>
-                    <textarea id="revComment" rows="3" required placeholder="แชร์ความประทับใจ..." class="w-full bg-pastel-lightpink/30 border border-pink-200 rounded-xl px-3 py-1.5 focus:outline-none focus:border-pastel-darkpink"></textarea>
+                    <label class="block text-gray-600 font-medium mb-1">ข้อความรีวิว 💌</label>
+                    <textarea id="revComment" rows="3" required placeholder="แชร์ความประทับใจของคุณได้เต็มที่เลยนะคะ..." class="w-full bg-pastel-lightpink/40 border border-pink-200 rounded-xl px-3 py-1.5 focus:outline-none focus:border-pastel-darkpink text-xs"></textarea>
                 </div>
-                <button type="submit" id="submitReviewBtn" class="w-full bg-pastel-darkpink hover:bg-pastel-deepness text-white py-2 rounded-full font-medium transition shadow-md">
-                    ส่งรีวิวให้แอดมินอนุมัติ 🌸
+                <button type="submit" id="submitReviewBtn" class="cute-btn w-full bg-gradient-to-r from-pastel-darkpink to-pastel-deepness text-white py-2 rounded-full font-medium shadow-md">
+                    ส่งรีวิวให้แอดมินอนุมัติ 🌸✨
                 </button>
             </form>
         </div>
@@ -190,61 +214,61 @@
 
     <!-- MODAL: เปลี่ยนโลโก้ร้าน -->
     <div id="logoModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-xl border border-pink-100 relative space-y-3">
-            <button onclick="closeLogoModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 border-pink-200 relative space-y-3">
+            <button onclick="closeLogoModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
             <h3 class="font-heading text-sm text-pastel-darkpink font-medium">เปลี่ยนโลโก้</h3>
             <div class="space-y-2.5 text-xs">
                 <div>
                     <label class="block text-gray-600 mb-1">เลือกรูปจากอัลบั้มมือถือ</label>
-                    <input type="file" id="logoFileInput" accept="image/*" onchange="handleImageUpload(event, saveLogoData)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:bg-pastel-pink file:text-pastel-darkpink">
+                    <input type="file" id="logoFileInput" accept="image/*" onchange="handleImageUpload(event, saveLogoData)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-full file:border-0 file:bg-pastel-pink file:text-pastel-darkpink font-medium">
                 </div>
                 <div class="text-center text-gray-400 font-bold text-[10px]">- หรือ -</div>
                 <div>
                     <label class="block text-gray-600 mb-1">ใส่ URL รูปภาพ</label>
-                    <input type="url" id="logoUrlInput" placeholder="https://..." class="w-full border border-pink-200 rounded-xl px-3 py-1.5 text-xs">
+                    <input type="url" id="logoUrlInput" placeholder="https://..." class="w-full border border-pink-200 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-pastel-darkpink">
                 </div>
-                <button onclick="saveLogoUrl()" class="w-full bg-pastel-darkpink text-white py-1.5 rounded-full text-xs font-medium">บันทึกโลโก้</button>
+                <button onclick="saveLogoUrl()" class="cute-btn w-full bg-pastel-darkpink text-white py-1.5 rounded-full text-xs font-medium shadow-sm">บันทึกโลโก้</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL: เปลี่ยนแบนเนอร์ (1122x495) -->
     <div id="bannerModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-xl border border-pink-100 relative space-y-3">
-            <button onclick="closeBannerModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 border-pink-200 relative space-y-3">
+            <button onclick="closeBannerModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
             <h3 class="font-heading text-sm text-pastel-darkpink font-medium">เปลี่ยนรูปแบนเนอร์ (1122 x 495)</h3>
             <input type="hidden" id="targetBannerType">
             <div class="space-y-2.5 text-xs">
                 <div>
                     <label class="block text-gray-600 mb-1">อัปโหลดจากมือถือ</label>
-                    <input type="file" id="bannerFileInput" accept="image/*" onchange="handleImageUpload(event, saveBannerData)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:bg-pastel-pink file:text-pastel-darkpink">
+                    <input type="file" id="bannerFileInput" accept="image/*" onchange="handleImageUpload(event, saveBannerData)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-full file:border-0 file:bg-pastel-pink file:text-pastel-darkpink font-medium">
                 </div>
                 <div class="text-center text-gray-400 font-bold text-[10px]">- หรือ -</div>
                 <div>
                     <label class="block text-gray-600 mb-1">ระบุ URL รูปภาพ</label>
-                    <input type="url" id="bannerUrlInput" placeholder="https://..." class="w-full border border-pink-200 rounded-xl px-3 py-1.5 text-xs">
+                    <input type="url" id="bannerUrlInput" placeholder="https://..." class="w-full border border-pink-200 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-pastel-darkpink">
                 </div>
-                <button onclick="saveBannerUrl()" class="w-full bg-pastel-darkpink text-white py-1.5 rounded-full font-medium">บันทึกแบนเนอร์</button>
+                <button onclick="saveBannerUrl()" class="cute-btn w-full bg-pastel-darkpink text-white py-1.5 rounded-full text-xs font-medium shadow-sm">บันทึกแบนเนอร์</button>
             </div>
         </div>
     </div>
 
     <!-- ADMIN LOGIN MODAL -->
     <div id="adminModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-xl border border-pink-100 relative space-y-3 text-center">
-            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="w-10 h-10 bg-pastel-lightpink text-pastel-darkpink rounded-full flex items-center justify-center mx-auto text-lg">🔒</div>
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-2xl border-2 border-pink-200 relative space-y-3 text-center">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-400"><i class="fa-solid fa-circle-xmark text-xl"></i></button>
+            <div class="w-10 h-10 bg-pastel-lightpink text-pastel-darkpink rounded-full flex items-center justify-center mx-auto text-lg shadow-inner border border-pink-200">🔒</div>
             <h3 class="font-heading text-sm text-gray-800 font-medium">เข้าสู่ระบบแอดมิน</h3>
             <div class="space-y-2">
                 <input type="email" id="adminEmail" placeholder="อีเมล Gmail (admin@gmail.com)" class="w-full bg-pastel-lightpink/30 border border-pink-200 rounded-xl px-3 py-1.5 text-xs text-center focus:outline-none focus:border-pastel-darkpink">
                 <input type="password" id="adminPassword" placeholder="รหัสผ่าน" class="w-full bg-pastel-lightpink/30 border border-pink-200 rounded-xl px-3 py-1.5 text-xs text-center focus:outline-none focus:border-pastel-darkpink">
             </div>
-            <button onclick="loginAdmin()" class="w-full bg-pastel-darkpink text-white py-1.5 rounded-full text-xs font-medium hover:bg-pastel-deepness transition shadow-sm">เข้าสู่ระบบ</button>
+            <button onclick="loginAdmin()" class="cute-btn w-full bg-pastel-darkpink text-white py-1.5 rounded-full text-xs font-medium hover:bg-pastel-deepness transition shadow-sm">เข้าสู่ระบบ</button>
         </div>
     </div>
 
-    <footer class="bg-white border-t border-pink-100 py-4 text-center text-[10px] text-gray-400 mt-6 max-w-md mx-auto w-full">
-        <p>© 2026 Pinkie Studio Store. Made with 💕 for Pastel Lovers</p>
+    <footer class="bg-white/80 border-t border-pink-100 py-4 text-center text-[10px] text-gray-400 mt-6 max-w-md mx-auto w-full font-cute">
+        <p>© 2026 Pinkie Studio Store. Made with 💕 for Pastel Lovers 🎀</p>
     </footer>
 
     <!-- FIREBASE SDK (Compat Version) -->
@@ -382,7 +406,7 @@
                 date: new Date().toISOString().split('T')[0]
             }, (err) => {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = 'ส่งรีวิวให้แอดมินอนุมัติ 🌸';
+                submitBtn.innerHTML = 'ส่งรีวิวให้แอดมินอนุมัติ 🌸✨';
                 if (!err) {
                     toggleWriteReviewModal();
                     document.getElementById('revAuthor').value = '';
@@ -405,14 +429,14 @@
             const approvedReviews = reviews.filter(r => r.status === 'approved');
             const pendingReviews = reviews.filter(r => r.status === 'pending');
 
-            // --- คำนวณคะแนนเฉลี่ยและจำนวนผู้รีวิว (จากรีวิวที่อนุมัติแล้ว) ---
+            // --- คำนวณคะแนนเฉลี่ยรีวิวและจำนวนผู้รีวิว (จากรีวิวที่อนุมัติแล้ว) ---
             const totalApproved = approvedReviews.length;
             const sumRating = approvedReviews.reduce((sum, r) => sum + Number(r.rating || 5), 0);
             const avgRating = totalApproved > 0 ? (sumRating / totalApproved).toFixed(1) : "0.0";
 
             document.getElementById('avgRatingText').textContent = avgRating;
             document.getElementById('reviewersCountText').textContent = `${totalApproved} คน`;
-            document.getElementById('approvedCountText').textContent = `ทั้งหมด ${totalApproved} รีวิว`;
+            document.getElementById('approvedCountText').textContent = `ทั้งหมด ${totalApproved} รีวิว 🌷`;
 
             if (isAdmin) {
                 adminModSection.classList.remove('hidden');
@@ -425,20 +449,20 @@
                     const fragment = document.createDocumentFragment();
                     pendingReviews.forEach(r => {
                         const div = document.createElement('div');
-                        div.className = 'bg-white p-2.5 rounded-xl border border-amber-200 flex flex-col gap-2 text-xs';
+                        div.className = 'bg-white p-3 rounded-xl border border-amber-200 flex flex-col gap-2 text-xs shadow-sm';
                         div.innerHTML = `
                             <div class="space-y-1">
                                 <div class="flex items-center space-x-2">
                                     <span class="font-bold text-gray-800">${r.author || 'ไม่ระบุชื่อ'}</span>
-                                    <span class="text-amber-400">★ ${r.rating || 5}</span>
+                                    <span class="text-amber-400 font-bold">★ ${r.rating || 5}</span>
                                     <span class="text-[9px] text-gray-400">${r.date || ''}</span>
                                 </div>
                                 <p class="text-gray-600 text-[11px]">${r.comment || ''}</p>
-                                ${r.image ? `<div class="mt-1"><span class="text-[9px] font-bold text-amber-700 block mb-0.5">รูปหลักฐาน (แอดมินเห็นคนเดียว):</span><a href="${r.image}" target="_blank"><img src="${r.image}" class="w-16 h-16 object-cover rounded-lg border border-amber-300"></a></div>` : ''}
+                                ${r.image ? `<div class="mt-1"><span class="text-[9px] font-bold text-amber-700 block mb-0.5">รูปหลักฐาน (แอดมินเห็นคนเดียว):</span><a href="${r.image}" target="_blank"><img src="${r.image}" class="w-16 h-16 object-cover rounded-lg border border-amber-300 shadow-sm"></a></div>` : ''}
                             </div>
                             <div class="flex items-center space-x-2 justify-end">
-                                <button onclick="approveReview('${r.id}')" class="bg-emerald-500 hover:bg-emerald-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-medium"><i class="fa-solid fa-check"></i> อนุมัติ</button>
-                                <button onclick="deleteReview('${r.id}')" class="bg-rose-400 hover:bg-rose-500 text-white px-2.5 py-0.5 rounded-full text-[10px] font-medium"><i class="fa-solid fa-xmark"></i> ปฏิเสธ</button>
+                                <button onclick="approveReview('${r.id}')" class="bg-emerald-500 hover:bg-emerald-600 text-white px-2.5 py-1 rounded-full text-[10px] font-medium shadow-sm transition"><i class="fa-solid fa-check"></i> อนุมัติ</button>
+                                <button onclick="deleteReview('${r.id}')" class="bg-rose-400 hover:bg-rose-500 text-white px-2.5 py-1 rounded-full text-[10px] font-medium shadow-sm transition"><i class="fa-solid fa-xmark"></i> ปฏิเสธ</button>
                             </div>
                         `;
                         fragment.appendChild(div);
@@ -451,14 +475,14 @@
 
             approvedContainer.innerHTML = '';
             if (approvedReviews.length === 0) {
-                approvedContainer.innerHTML = `<div class="text-center py-6 text-xs text-gray-400">ยังไม่มีรีวิวที่ได้รับการอนุมัติในขณะนี้ค่ะ 🌸</div>`;
+                approvedContainer.innerHTML = `<div class="text-center py-6 text-xs text-gray-400 font-cute">ยังไม่มีรีวิวที่ได้รับการอนุมัติในขณะนี้ค่ะ 🌸</div>`;
                 return;
             }
 
             const fragment = document.createDocumentFragment();
             approvedReviews.forEach(r => {
                 const card = document.createElement('div');
-                card.className = 'p-3 bg-pastel-lightpink/20 rounded-xl border border-pink-100 space-y-1.5 relative';
+                card.className = 'p-3 bg-gradient-to-r from-pastel-lightpink/40 to-white rounded-xl border border-pink-100 space-y-1.5 relative shadow-sm hover:shadow-md transition';
                 
                 let stars = '';
                 const ratingNum = r.rating || 5;
@@ -471,10 +495,10 @@
                             <span class="font-medium text-xs text-gray-800">${r.author || 'ผู้ใช้งาน'}</span>
                             <div class="text-[9px] space-x-0.5">${stars}</div>
                         </div>
-                        <span class="text-[9px] text-gray-400">${r.date || ''}</span>
+                        <span class="text-[9px] text-pink-300 font-cute">${r.date || ''}</span>
                     </div>
-                    <p class="text-[11px] text-gray-600">${r.comment || ''}</p>
-                    ${isAdmin ? `<button onclick="deleteReview('${r.id}')" class="absolute bottom-2 right-2 text-rose-400 hover:text-rose-600 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
+                    <p class="text-[11px] text-gray-600 leading-relaxed">${r.comment || ''}</p>
+                    ${isAdmin ? `<button onclick="deleteReview('${r.id}')" class="absolute bottom-2 right-2 text-rose-300 hover:text-rose-500 text-xs transition"><i class="fa-solid fa-trash"></i></button>` : ''}
                 `;
                 fragment.appendChild(card);
             });
