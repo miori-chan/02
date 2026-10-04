@@ -1,558 +1,540 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Miori Shop - รีวิวจากลูกค้า</title>
-  <!-- Google Fonts & Font Awesome Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <style>
-    :root {
-      --primary-pink: #ff8fa3;
-      --soft-pink: #fff0f3;
-      --card-pink: #fffbfe;
-      --text-color: #5c4d51;
-      --chat-bg-user: #ffe5ec;
-      --chat-bg-shop: #f0efff;
-      --border-color: #ffccd5;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Kanit', sans-serif;
-    }
-
-    body {
-      background-color: #f7f7f7;
-      display: flex;
-      justify-content: center;
-      padding: 0;
-      color: var(--text-color);
-    }
-
-    /* จำลองกรอบหน้าจอมือถือ */
-    .mobile-container {
-      width: 100%;
-      max-width: 430px;
-      background-color: #ffffff;
-      min-height: 100vh;
-      box-shadow: 0 0 20px rgba(0,0,0,0.08);
-      position: relative;
-      padding-bottom: 70px;
-    }
-
-    /* Header */
-    .header {
-      padding: 15px 20px 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #fff;
-    }
-
-    .shop-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .shop-logo {
-      width: 45px;
-      height: 45px;
-      background: var(--soft-pink);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary-pink);
-      font-size: 24px;
-      border: 2px solid var(--border-color);
-    }
-
-    .shop-title h1 {
-      font-size: 18px;
-      color: #d63384;
-      font-weight: 600;
-    }
-
-    .shop-title p {
-      font-size: 12px;
-      color: #888;
-    }
-
-    /* Banner */
-    .banner {
-      margin: 10px 15px;
-      background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
-      border-radius: 16px;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: #b5179e;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .banner-text h2 {
-      font-size: 16px;
-      margin-bottom: 4px;
-    }
-
-    .banner-text p {
-      font-size: 12px;
-      opacity: 0.9;
-    }
-
-    /* Rating Box */
-    .rating-summary {
-      margin: 15px;
-      background: #fff5f7;
-      border-radius: 12px;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      border: 1px solid var(--border-color);
-    }
-
-    .score {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .score i {
-      color: #ffb703;
-    }
-
-    .total-reviews {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 14px;
-      color: #666;
-    }
-
-    .total-reviews i {
-      color: var(--primary-pink);
-    }
-
-    /* Filter Chips */
-    .filter-tags {
-      display: flex;
-      gap: 8px;
-      padding: 0 15px;
-      overflow-x: auto;
-      margin-bottom: 15px;
-    }
-
-    .tag {
-      padding: 6px 14px;
-      border-radius: 20px;
-      background: #f1f1f1;
-      font-size: 12px;
-      white-space: nowrap;
-      cursor: pointer;
-      color: #666;
-    }
-
-    .tag.active {
-      background: var(--primary-pink);
-      color: white;
-    }
-
-    /* Write Review Button */
-    .btn-write-review {
-      margin: 0 15px 15px;
-      width: calc(100% - 30px);
-      padding: 10px;
-      background: #ff758f;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(255, 117, 143, 0.3);
-    }
-
-    /* Chat Review List */
-    .chat-reviews-list {
-      padding: 0 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .chat-card {
-      background: #fff;
-      border: 1px solid #ffe0e6;
-      border-radius: 16px;
-      padding: 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    }
-
-    .chat-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px dashed #ffe0e6;
-    }
-
-    .user-profile {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .user-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #ffd1dc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
-
-    .user-name {
-      font-weight: 500;
-      font-size: 14px;
-    }
-
-    .review-date {
-      font-size: 11px;
-      color: #aaa;
-    }
-
-    .stars {
-      color: #ffb703;
-      font-size: 12px;
-    }
-
-    /* Chat Body */
-    .chat-body {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .message-bubble {
-      max-width: 85%;
-      padding: 10px 14px;
-      border-radius: 16px;
-      font-size: 13px;
-      line-height: 1.4;
-      position: relative;
-    }
-
-    /* ข้อความฝั่งลูกค้า */
-    .message-bubble.customer {
-      align-self: flex-start;
-      background-color: var(--chat-bg-user);
-      color: #4a3e3d;
-      border-bottom-left-radius: 4px;
-    }
-
-    /* ข้อความตอบกลับจากร้าน */
-    .message-bubble.shop {
-      align-self: flex-end;
-      background-color: var(--chat-bg-shop);
-      color: #3d3b4e;
-      border-bottom-right-radius: 4px;
-    }
-
-    .shop-label {
-      font-size: 10px;
-      font-weight: bold;
-      color: #6c5ce7;
-      margin-bottom: 2px;
-      display: block;
-    }
-
-    /* รูปภาพแนบในแชท */
-    .chat-images {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .chat-img {
-      width: 60px;
-      height: 60px;
-      border-radius: 8px;
-      object-fit: cover;
-      border: 1px solid #ffd1dc;
-    }
-
-    /* Action Footer */
-    .chat-actions {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 15px;
-      margin-top: 10px;
-      font-size: 12px;
-      color: #888;
-    }
-
-    .action-btn {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-    }
-
-    .action-btn i.fa-heart {
-      color: #ff4d6d;
-    }
-
-    /* Navigation Bar ด้านล่าง */
-    .nav-bar {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      max-width: 430px;
-      background: #ffffff;
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
-      border-top: 1px solid #eee;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 11px;
-      color: #aaa;
-      gap: 3px;
-      cursor: pointer;
-    }
-
-    .nav-item.active {
-      color: var(--primary-pink);
-    }
-
-    .nav-item i {
-      font-size: 18px;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="mobile-container">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinkie Studio - รีวิวสินค้า</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kanit & Mitr -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Mitr:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Header ร้านค้า -->
-    <div class="header">
-      <div class="shop-info">
-        <div class="shop-logo">
-          <i class="fa-solid fa-square-rabbit"></i>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastel: {
+                            pink: '#FFD1DC',
+                            lightpink: '#FFF0F3',
+                            deepness: '#FF94A8',
+                            rose: '#FFB6C1',
+                            cream: '#FFF9F5',
+                            softblue: '#E2F0CB',
+                            gray: '#706C61',
+                            darkpink: '#E06D83',
+                            bg: '#FAF4F5'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                        heading: ['Mitr', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #FAF4F5; font-family: 'Kanit', sans-serif; }
+        .font-heading { font-family: 'Mitr', sans-serif; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #FFF0F3; }
+        ::-webkit-scrollbar-thumb { background: #FFB6C1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FF94A8; }
+        .aspect-banner { aspect-ratio: 1122 / 495; }
+    </style>
+</head>
+<body class="text-gray-700 min-h-screen flex flex-col justify-between">
+    <!-- Audio Player Hidden Element -->
+    <audio id="bgAudio" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Admin Top Banner -->
+    <div id="adminBanner" class="hidden bg-pastel-deepness text-white py-2 px-4 text-center text-xs font-medium shadow-md flex justify-between items-center transition-all duration-300 max-w-md mx-auto w-full">
+        <div class="flex items-center space-x-2">
+            <span class="bg-white text-pastel-darkpink text-[10px] px-2 py-0.5 rounded-full font-bold">ADMIN MODE</span>
+            <span class="text-[11px] truncate">จัดการอนุมัติและรีวิวสินค้า</span>
         </div>
-        <div class="shop-title">
-          <h1>Miori Shop 💕</h1>
-          <p>รีวิวจากลูกค้าของเรา</p>
-        </div>
-      </div>
-      <i class="fa-solid fa-bars" style="color: #888; font-size: 20px;"></i>
+        <button onclick="logoutAdmin()" class="bg-white/20 hover:bg-white/30 text-white text-[10px] px-2.5 py-1 rounded-full transition duration-200 shrink-0">
+            <i class="fa-solid fa-sign-out-alt mr-1"></i> ออก
+        </button>
     </div>
 
-    <!-- Banner -->
-    <div class="banner">
-      <div class="banner-text">
-        <h2>ขอบคุณทุกรีวิวจากลูกค้านะคะ</h2>
-        <p>รีวิวของคุณ คือกำลังใจของเรา 💕</p>
-      </div>
-      <i class="fa-solid fa-heart" style="font-size: 40px; color: rgba(255,255,255,0.7);"></i>
-    </div>
-
-    <!-- สรุปคะแนนรีวิว -->
-    <div class="rating-summary">
-      <div class="score">
-        <i class="fa-solid fa-star"></i>
-        <span>4.8</span> <span style="font-size: 12px; font-weight: normal; color: #888;">จาก 5 ดาว</span>
-      </div>
-      <div style="width: 1px; height: 25px; background: #ffd1dc;"></div>
-      <div class="total-reviews">
-        <i class="fa-solid fa-comment-dots"></i>
-        <span>128 รีวิว</span>
-      </div>
-    </div>
-
-    <!-- ปุ่มตัวกรองดาว -->
-    <div class="filter-tags">
-      <div class="tag active">ทั้งหมด</div>
-      <div class="tag">5 ดาว</div>
-      <div class="tag">4 ดาว</div>
-      <div class="tag">3 ดาว</div>
-      <div class="tag">2 ดาว</div>
-      <div class="tag">1 ดาว</div>
-    </div>
-
-    <!-- ปุ่มเขียนรีวิว -->
-    <button class="btn-write-review">
-      <i class="fa-solid fa-pen"></i> เขียนรีวิว
-    </button>
-
-    <!-- รายการรีวิวแบบช่องแชท -->
-    <div class="chat-reviews-list">
-
-      <!-- แชทรีวิวที่ 1 -->
-      <div class="chat-card">
-        <div class="chat-header">
-          <div class="user-profile">
-            <div class="user-avatar">👧🏻</div>
-            <div>
-              <div class="user-name">น้องมายด์</div>
-              <div class="stars">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
+    <!-- Header / Navbar -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-pastel-pink/40 shadow-sm max-w-md mx-auto w-full">
+        <div class="px-4 py-2.5 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <a href="#" class="flex items-center space-x-2 group">
+                    <div class="w-9 h-9 rounded-full bg-pastel-pink flex items-center justify-center text-pastel-darkpink text-lg font-bold shadow-inner group-hover:scale-105 transition overflow-hidden shrink-0">
+                        <img id="storeLogoImg" src="" class="w-full h-full object-cover hidden" alt="Logo">
+                        <span id="storeLogoText">🌸</span>
+                    </div>
+                    <div>
+                        <span id="storeNameText" class="font-heading text-base font-medium text-pastel-darkpink tracking-wide block leading-tight">Pinkie Studio</span>
+                        <span class="block text-[9px] text-pink-400 tracking-wider">REVIEWS PAGE</span>
+                    </div>
+                </a>
+                <button id="changeLogoBtn" onclick="openLogoModal()" class="hidden text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-lg hover:bg-amber-200 ml-1">
+                    <i class="fa-solid fa-camera"></i>
+                </button>
             </div>
-          </div>
-          <span class="review-date">15 ก.ย. 2026</span>
-        </div>
 
-        <div class="chat-body">
-          <!-- ข้อความลูกค้ารีวิว -->
-          <div class="message-bubble customer">
-            ชอบมากค่ะ บริการดีมาก ตอบไว เป็นกันเองสุดๆ ไว้มาอุดหนุนอีกแน่นอนค่ะ 💕
-            <div class="chat-images">
-              <img src="https://via.placeholder.com/60/ffccd5/ffffff?text=Item1" class="chat-img" alt="ภาพรีวิว">
-              <img src="https://via.placeholder.com/60/ffccd5/ffffff?text=Item2" class="chat-img" alt="ภาพรีวิว">
+            <div class="flex items-center space-x-2">
+                <button id="musicToggleBtn" onclick="toggleMusic()" class="relative text-pastel-darkpink hover:bg-pastel-pink transition bg-pastel-lightpink rounded-full w-8 h-8 flex items-center justify-center shadow-sm shrink-0">
+                    <i id="musicIcon" class="fa-solid fa-music text-xs"></i>
+                </button>
+                <button id="adminLoginBtn" onclick="openAdminModal()" class="text-xs bg-pastel-pink/50 hover:bg-pastel-pink text-pastel-darkpink h-8 px-3 rounded-full font-medium transition flex items-center space-x-1 shrink-0">
+                    <i class="fa-solid fa-lock text-[10px]"></i> <span id="adminBtnText">แอดมิน</span>
+                </button>
             </div>
-          </div>
-          
-          <!-- ข้อความตอบกลับจากทางร้าน -->
-          <div class="message-bubble shop">
-            <span class="shop-label">Miori Shop (เจ้าของร้าน)</span>
-            ขอบคุณน้องมายด์มากๆ เลยนะคะยินดีให้บริการเสมอค่า แวะมาอีกน้าา ✨🌸
-          </div>
         </div>
+    </header>
 
-        <div class="chat-actions">
-          <div class="action-btn"><i class="fa-solid fa-heart"></i> 12</div>
-          <div class="action-btn"><i class="fa-regular fa-paper-plane"></i> แชร์</div>
-        </div>
-      </div>
-
-      <!-- แชทรีวิวที่ 2 -->
-      <div class="chat-card">
-        <div class="chat-header">
-          <div class="user-profile">
-            <div class="user-avatar">🐰</div>
-            <div>
-              <div class="user-name">Pimmy</div>
-              <div class="stars">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
+    <!-- MAIN CONTENT (REVIEWS ONLY) -->
+    <main class="max-w-md mx-auto px-3 py-4 flex-grow w-full">
+        <section id="page-reviews" class="space-y-4 max-w-md mx-auto">
+            <div class="relative w-full aspect-banner bg-pastel-lightpink rounded-2xl overflow-hidden border border-pink-100 shadow-sm group">
+                <img id="aboutBannerImg" src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=1200&auto=format&fit=crop&q=80" class="w-full h-full object-cover">
+                <button id="editAboutBannerBtn" onclick="openBannerModal('about')" class="hidden absolute top-2 right-2 bg-white/90 text-amber-600 px-2 py-1 rounded-full text-[10px] font-medium shadow hover:bg-white flex items-center space-x-1">
+                    <i class="fa-solid fa-camera"></i> <span>เปลี่ยนแบนเนอร์ (1122x495)</span>
+                </button>
             </div>
-          </div>
-          <span class="review-date">12 ก.ย. 2026</span>
-        </div>
 
-        <div class="chat-body">
-          <div class="message-bubble customer">
-            ส่งไวมากค่ะ แพ็คของดีมาก ประทับใจสุดๆ ไว้จะมารีวิวอีกแน่นอน 💕
-            <div class="chat-images">
-              <img src="https://via.placeholder.com/60/ffb703/ffffff?text=Item3" class="chat-img" alt="ภาพรีวิว">
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-pink-100 flex items-center justify-between">
+                <div>
+                    <h3 class="font-heading text-sm text-pastel-darkpink font-medium">💬 รีวิวจากลูกค้า</h3>
+                    <p class="text-[10px] text-gray-400">แบ่งปันความประทับใจของคุณได้ที่นี่ค่ะ</p>
+                </div>
+                <button id="writeReviewBtn" onclick="toggleWriteReviewModal()" class="bg-pastel-darkpink hover:bg-pastel-deepness text-white text-[11px] px-3 py-1.5 rounded-full font-medium transition shadow-sm flex items-center space-x-1 shrink-0">
+                    <i class="fa-solid fa-pen text-[9px]"></i>
+                    <span>+ เขียนรีวิว</span>
+                </button>
             </div>
-          </div>
 
-          <div class="message-bubble shop">
-            <span class="shop-label">Miori Shop (เจ้าของร้าน)</span>
-            ขอบพระคุณสำหรับรีวิวน่ารักๆ ค่า 🥰❤️
-          </div>
-        </div>
-
-        <div class="chat-actions">
-          <div class="action-btn"><i class="fa-solid fa-heart"></i> 8</div>
-          <div class="action-btn"><i class="fa-regular fa-paper-plane"></i> แชร์</div>
-        </div>
-      </div>
-
-      <!-- แชทรีวิวที่ 3 -->
-      <div class="chat-card">
-        <div class="chat-header">
-          <div class="user-profile">
-            <div class="user-avatar">👩🏻</div>
-            <div>
-              <div class="user-name">ฟ้าใส</div>
-              <div class="stars">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-regular fa-star"></i>
-              </div>
+            <!-- ADMIN MODERATION SECTION -->
+            <div id="adminModerationSection" class="hidden bg-amber-50/90 border border-amber-200 rounded-2xl p-4 shadow-sm space-y-3">
+                <div class="flex items-center justify-between border-b border-amber-200/60 pb-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-amber-400 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">ADMIN ONLY</span>
+                        <h4 class="font-heading text-xs text-amber-900 font-medium">รอการอนุมัติ</h4>
+                    </div>
+                    <span id="pendingCountBadge" class="text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full font-bold">0 รายการ</span>
+                </div>
+                <div id="pendingReviewsContainer" class="space-y-2"></div>
             </div>
-          </div>
-          <span class="review-date">10 ก.ย. 2026</span>
+
+            <!-- APPROVED REVIEWS FEED -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-pink-100 space-y-4">
+                <div class="flex items-center justify-between border-b border-pink-50 pb-2">
+                    <span id="approvedCountText" class="text-[11px] text-gray-400">ทั้งหมด 0 รีวิว</span>
+                </div>
+                <div id="approvedReviewsContainer" class="space-y-3"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- WRITE REVIEW MODAL -->
+    <div id="reviewModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-xl border border-pink-100 relative space-y-3">
+            <button onclick="toggleWriteReviewModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center space-y-1">
+                <span class="text-xl">📝✨</span>
+                <h3 class="font-heading text-base text-pastel-darkpink font-medium">เขียนรีวิวสินค้า</h3>
+                <p class="text-[10px] text-gray-400">แนบรูปภาพสินค้า/สลิปจากอัลบั้มมือถือ</p>
+            </div>
+            <form onsubmit="handleCustomerSubmitReview(event)" class="space-y-2.5 text-xs">
+                <div>
+                    <label class="block text-gray-600 font-medium mb-1">ชื่อผู้รีวิว</label>
+                    <input type="text" id="revAuthor" required placeholder="ใส่ชื่อของคุณ..." class="w-full bg-pastel-lightpink/30 border border-pink-200 rounded-xl px-3 py-1.5 focus:outline-none focus:border-pastel-darkpink">
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-medium mb-1">ให้คะแนนสินค้า</label>
+                    <div class="flex space-x-2 text-base text-amber-300" id="starSelector">
+                        <button type="button" onclick="setSelectRating(1)" class="star-btn text-amber-400"><i class="fa-solid fa-star"></i></button>
+                        <button type="button" onclick="setSelectRating(2)" class="star-btn text-amber-400"><i class="fa-solid fa-star"></i></button>
+                        <button type="button" onclick="setSelectRating(3)" class="star-btn text-amber-400"><i class="fa-solid fa-star"></i></button>
+                        <button type="button" onclick="setSelectRating(4)" class="star-btn text-amber-400"><i class="fa-solid fa-star"></i></button>
+                        <button type="button" onclick="setSelectRating(5)" class="star-btn text-amber-400"><i class="fa-solid fa-star"></i></button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-medium mb-1">ข้อความรีวิว</label>
+                    <textarea id="revComment" rows="2" required placeholder="แชร์ความประทับใจ..." class="w-full bg-pastel-lightpink/30 border border-pink-200 rounded-xl px-3 py-1.5 focus:outline-none focus:border-pastel-darkpink"></textarea>
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-medium mb-1">แนบรูปหลักฐาน</label>
+                    <input type="file" id="revImageFile" accept="image/*" onchange="previewReviewImage(event)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-[10px] file:bg-pastel-pink file:text-pastel-darkpink">
+                    <div id="revImagePreview" class="hidden mt-2 relative w-16 h-16 border border-pink-200 rounded-xl overflow-hidden">
+                        <img src="" id="imgPreviewTag" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <button type="submit" id="submitReviewBtn" class="w-full bg-pastel-darkpink hover:bg-pastel-deepness text-white py-2 rounded-full font-medium transition shadow-md">
+                    ส่งรีวิวให้แอดมินอนุมัติ 🌸
+                </button>
+            </form>
         </div>
-
-        <div class="chat-body">
-          <div class="message-bubble customer">
-            สินค้าดีมากค่ะ แต่รอนานนิดหน่อย โดยรวมคือดีมากเลยค่ะ 💖
-          </div>
-
-          <div class="message-bubble shop">
-            <span class="shop-label">Miori Shop (เจ้าของร้าน)</span>
-            ทางร้านจะปรับปรุงเรื่องความเร็วการจัดส่งให้ดียิ่งขึ้นนะคะ ขอบคุณสำหรับคำติชมค่ะ 🙏
-          </div>
-        </div>
-
-        <div class="chat-actions">
-          <div class="action-btn"><i class="fa-solid fa-heart"></i> 5</div>
-          <div class="action-btn"><i class="fa-regular fa-paper-plane"></i> แชร์</div>
-        </div>
-      </div>
-
     </div>
 
-    <!-- Menu Bar ด้านล่าง -->
-    <div class="nav-bar">
-      <div class="nav-item">
-        <i class="fa-solid fa-house"></i>
-        <span>หน้าแรก</span>
-      </div>
-      <div class="nav-item">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <span>ค้นหา</span>
-      </div>
-      <div class="nav-item active">
-        <i class="fa-solid fa-star"></i>
-        <span>รีวิว</span>
-      </div>
-      <div class="nav-item">
-        <i class="fa-solid fa-user"></i>
-        <span>โปรไฟล์</span>
-      </div>
+    <!-- MODAL: เปลี่ยนโลโก้ร้าน -->
+    <div id="logoModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-xl border border-pink-100 relative space-y-3">
+            <button onclick="closeLogoModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="font-heading text-sm text-pastel-darkpink font-medium">เปลี่ยนโลโก้</h3>
+            <div class="space-y-2.5 text-xs">
+                <div>
+                    <label class="block text-gray-600 mb-1">เลือกรูปจากอัลบั้มมือถือ</label>
+                    <input type="file" id="logoFileInput" accept="image/*" onchange="handleImageUpload(event, saveLogoData)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:bg-pastel-pink file:text-pastel-darkpink">
+                </div>
+                <div class="text-center text-gray-400 font-bold text-[10px]">- หรือ -</div>
+                <div>
+                    <label class="block text-gray-600 mb-1">ใส่ URL รูปภาพ</label>
+                    <input type="url" id="logoUrlInput" placeholder="https://..." class="w-full border border-pink-200 rounded-xl px-3 py-1.5 text-xs">
+                </div>
+                <button onclick="saveLogoUrl()" class="w-full bg-pastel-darkpink text-white py-1.5 rounded-full text-xs font-medium">บันทึกโลโก้</button>
+            </div>
+        </div>
     </div>
 
-  </div>
+    <!-- MODAL: เปลี่ยนแบนเนอร์ (1122x495) -->
+    <div id="bannerModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-xl border border-pink-100 relative space-y-3">
+            <button onclick="closeBannerModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="font-heading text-sm text-pastel-darkpink font-medium">เปลี่ยนรูปแบนเนอร์ (1122 x 495)</h3>
+            <input type="hidden" id="targetBannerType">
+            <div class="space-y-2.5 text-xs">
+                <div>
+                    <label class="block text-gray-600 mb-1">อัปโหลดจากมือถือ</label>
+                    <input type="file" id="bannerFileInput" accept="image/*" onchange="handleImageUpload(event, saveBannerData)" class="w-full text-[10px] text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:bg-pastel-pink file:text-pastel-darkpink">
+                </div>
+                <div class="text-center text-gray-400 font-bold text-[10px]">- หรือ -</div>
+                <div>
+                    <label class="block text-gray-600 mb-1">ระบุ URL รูปภาพ</label>
+                    <input type="url" id="bannerUrlInput" placeholder="https://..." class="w-full border border-pink-200 rounded-xl px-3 py-1.5 text-xs">
+                </div>
+                <button onclick="saveBannerUrl()" class="w-full bg-pastel-darkpink text-white py-1.5 rounded-full font-medium">บันทึกแบนเนอร์</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- ADMIN LOGIN MODAL -->
+    <div id="adminModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-xs w-full p-5 shadow-xl border border-pink-100 relative space-y-3 text-center">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="w-10 h-10 bg-pastel-lightpink text-pastel-darkpink rounded-full flex items-center justify-center mx-auto text-lg">🔒</div>
+            <h3 class="font-heading text-sm text-gray-800 font-medium">เข้าสู่ระบบแอดมิน</h3>
+            <div class="space-y-2">
+                <input type="email" id="adminEmail" placeholder="อีเมล Gmail (admin@gmail.com)" class="w-full bg-pastel-lightpink/30 border border-pink-200 rounded-xl px-3 py-1.5 text-xs text-center focus:outline-none focus:border-pastel-darkpink">
+                <input type="password" id="adminPassword" placeholder="รหัสผ่าน" class="w-full bg-pastel-lightpink/30 border border-pink-200 rounded-xl px-3 py-1.5 text-xs text-center focus:outline-none focus:border-pastel-darkpink">
+            </div>
+            <button onclick="loginAdmin()" class="w-full bg-pastel-darkpink text-white py-1.5 rounded-full text-xs font-medium hover:bg-pastel-deepness transition shadow-sm">เข้าสู่ระบบ</button>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-pink-100 py-4 text-center text-[10px] text-gray-400 mt-6 max-w-md mx-auto w-full">
+        <p>© 2026 Pinkie Studio Store. Made with 💕 for Pastel Lovers</p>
+    </footer>
+
+    <!-- FIREBASE SDK (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        // --- 1. FIREBASE INITIALIZATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyC31MlhrmXO9g5wnZJNT3OnPr8Tayvs5tU",
+            authDomain: "yoneko-store.firebaseapp.com",
+            databaseURL: "https://yoneko-store-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "yoneko-store",
+            storageBucket: "yoneko-store.firebasestorage.app",
+            messagingSenderId: "138589530794",
+            appId: "1:138589530794:web:4499a524009033a1777ed3",
+            measurementId: "G-R1QT1BSN90"
+        };
+        let rtdb;
+        try {
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            rtdb = firebase.database();
+        } catch (e) { console.error("Firebase init failed:", e); }
+        
+        // --- 2. GLOBAL STATES ---
+        let reviews = [];
+        let isAdmin = localStorage.getItem('pinkie_is_admin') === 'true';
+        let currentSelectedRating = 5;
+        let currentUploadedImageBase64 = null;
+        let isPlaying = false;
+
+        // --- MUSIC TOGGLE FUNCTION ---
+        function toggleMusic() {
+            const audio = document.getElementById('bgAudio');
+            const icon = document.getElementById('musicIcon');
+            if (isPlaying) {
+                audio.pause();
+                icon.className = 'fa-solid fa-music text-xs';
+            } else {
+                audio.play().catch(e => console.log("Audio play deferred:", e));
+                icon.className = 'fa-solid fa-compact-disc fa-spin text-xs text-pink-500';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // --- 3. REALTIME LISTENERS ---
+        if (rtdb) {
+            // รีวิว
+            rtdb.ref('reviews').on('value', (snap) => {
+                const data = snap.val();
+                reviews = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+                renderReviews();
+            });
+            // การตั้งค่าเว็บไซต์
+            rtdb.ref('site_settings').on('value', (snap) => {
+                const settings = snap.val() || {};
+                
+                if (settings.logo) {
+                    document.getElementById('storeLogoImg').src = settings.logo;
+                    document.getElementById('storeLogoImg').classList.remove('hidden');
+                    document.getElementById('storeLogoText').classList.add('hidden');
+                }
+                if (settings.aboutBanner) document.getElementById('aboutBannerImg').src = settings.aboutBanner;
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateAdminUI();
+        });
+
+        // --- 4. IMAGE HELPER ---
+        function handleImageUpload(event, callback) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) return alert('ไฟล์มีขนาดใหญ่เกิน 2MB');
+            const reader = new FileReader();
+            reader.onload = (e) => callback(e.target.result);
+            reader.readAsDataURL(file);
+        }
+        function openLogoModal() { document.getElementById('logoModal').classList.remove('hidden'); }
+        function closeLogoModal() { document.getElementById('logoModal').classList.add('hidden'); }
+        function saveLogoData(base64) {
+            if (rtdb) rtdb.ref('site_settings/logo').set(base64);
+            closeLogoModal();
+        }
+        function saveLogoUrl() {
+            const url = document.getElementById('logoUrlInput').value.trim();
+            if (url && rtdb) rtdb.ref('site_settings/logo').set(url);
+            closeLogoModal();
+        }
+        function openBannerModal(type) {
+            if (!isAdmin) return alert('ส่วนนี้สำหรับแอดมินเท่านั้นค่ะ');
+            document.getElementById('targetBannerType').value = type;
+            document.getElementById('bannerModal').classList.remove('hidden');
+        }
+        function closeBannerModal() { document.getElementById('bannerModal').classList.add('hidden'); }
+        function saveBannerData(base64) {
+            const type = document.getElementById('targetBannerType').value;
+            if (rtdb) {
+                rtdb.ref(`site_settings/${type}Banner`).set(base64);
+            }
+            closeBannerModal();
+        }
+        function saveBannerUrl() {
+            const type = document.getElementById('targetBannerType').value;
+            const url = document.getElementById('bannerUrlInput').value.trim();
+            if (url && rtdb) {
+                rtdb.ref(`site_settings/${type}Banner`).set(url);
+            }
+            closeBannerModal();
+        }
+
+        // --- 5. REVIEWS SYSTEM ---
+        function setSelectRating(r) {
+            currentSelectedRating = r;
+            document.querySelectorAll('#starSelector .star-btn').forEach((btn, idx) => {
+                btn.className = idx < r ? 'star-btn text-amber-400' : 'star-btn text-gray-200';
+            });
+        }
+        function previewReviewImage(event) {
+            handleImageUpload(event, (base64) => {
+                currentUploadedImageBase64 = base64;
+                document.getElementById('imgPreviewTag').src = base64;
+                document.getElementById('revImagePreview').classList.remove('hidden');
+            });
+        }
+        function toggleWriteReviewModal() {
+            document.getElementById('reviewModal').classList.toggle('hidden');
+        }
+        function handleCustomerSubmitReview(e) {
+            e.preventDefault();
+            if (!rtdb) return alert('ฐานข้อมูลยังไม่พร้อมใช้งานค่ะ');
+            const author = document.getElementById('revAuthor').value.trim();
+            const comment = document.getElementById('revComment').value.trim();
+            const submitBtn = document.getElementById('submitReviewBtn');
+            if (!author || !comment) return alert('กรุณากรอกข้อมูลให้ครบถ้วนค่ะ');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังส่ง...';
+            rtdb.ref('reviews').push({
+                author,
+                rating: currentSelectedRating,
+                comment,
+                image: currentUploadedImageBase64 || null,
+                status: 'pending',
+                date: new Date().toISOString().split('T')[0]
+            }, (err) => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'ส่งรีวิวให้แอดมินอนุมัติ 🌸';
+                if (!err) {
+                    toggleWriteReviewModal();
+                    document.getElementById('revAuthor').value = '';
+                    document.getElementById('revComment').value = '';
+                    document.getElementById('revImageFile').value = '';
+                    document.getElementById('revImagePreview').classList.add('hidden');
+                    currentUploadedImageBase64 = null;
+                    alert('ส่งรีวิวเรียบร้อยแล้วค่ะ! รอแอดมินตรวจสอบและอนุมัตินะคะ ✨');
+                } else {
+                    alert('เกิดข้อผิดพลาดในการส่งรีวิว กรุณาลองใหม่อีกครั้ง');
+                }
+            });
+        }
+        function approveReview(id) { if (rtdb) rtdb.ref(`reviews/${id}`).update({ status: 'approved' }); }
+        function deleteReview(id) { if (confirm('ต้องการลบรีวิวนี้ใช่หรือไม่?') && rtdb) rtdb.ref(`reviews/${id}`).remove(); }
+        
+        function renderReviews() {
+            const approvedContainer = document.getElementById('approvedReviewsContainer');
+            const pendingContainer = document.getElementById('pendingReviewsContainer');
+            const adminModSection = document.getElementById('adminModerationSection');
+            if (!approvedContainer) return;
+
+            const approvedReviews = reviews.filter(r => r.status === 'approved');
+            const pendingReviews = reviews.filter(r => r.status === 'pending');
+
+            document.getElementById('approvedCountText').textContent = `ทั้งหมด ${approvedReviews.length} รีวิว`;
+
+            if (isAdmin) {
+                adminModSection.classList.remove('hidden');
+                document.getElementById('pendingCountBadge').textContent = `${pendingReviews.length} รายการ`;
+                pendingContainer.innerHTML = '';
+
+                if (pendingReviews.length === 0) {
+                    pendingContainer.innerHTML = `<div class="text-[11px] text-amber-700 italic">ไม่มีรีวิวที่รออนุมัติในขณะนี้ค่ะ ✨</div>`;
+                } else {
+                    const fragment = document.createDocumentFragment();
+                    pendingReviews.forEach(r => {
+                        const div = document.createElement('div');
+                        div.className = 'bg-white p-2.5 rounded-xl border border-amber-200 flex flex-col gap-2 text-xs';
+                        div.innerHTML = `
+                            <div class="space-y-1">
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-bold text-gray-800">${r.author || 'ไม่ระบุชื่อ'}</span>
+                                    <span class="text-amber-400">★ ${r.rating || 5}</span>
+                                    <span class="text-[9px] text-gray-400">${r.date || ''}</span>
+                                </div>
+                                <p class="text-gray-600 text-[11px]">${r.comment || ''}</p>
+                                ${r.image ? `<a href="${r.image}" target="_blank" class="inline-block text-[10px] text-pastel-darkpink underline"><i class="fa-solid fa-image"></i> ดูรูปแนบ</a>` : ''}
+                            </div>
+                            <div class="flex items-center space-x-2 justify-end">
+                                <button onclick="approveReview('${r.id}')" class="bg-emerald-500 hover:bg-emerald-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-medium"><i class="fa-solid fa-check"></i> อนุมัติ</button>
+                                <button onclick="deleteReview('${r.id}')" class="bg-rose-400 hover:bg-rose-500 text-white px-2.5 py-0.5 rounded-full text-[10px] font-medium"><i class="fa-solid fa-xmark"></i> ปฏิเสธ</button>
+                            </div>
+                        `;
+                        fragment.appendChild(div);
+                    });
+                    pendingContainer.appendChild(fragment);
+                }
+            } else {
+                adminModSection.classList.add('hidden');
+            }
+
+            approvedContainer.innerHTML = '';
+            if (approvedReviews.length === 0) {
+                approvedContainer.innerHTML = `<div class="text-center py-6 text-xs text-gray-400">ยังไม่มีรีวิวที่ได้รับการอนุมัติในขณะนี้ค่ะ 🌸</div>`;
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+            approvedReviews.forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'p-3 bg-pastel-lightpink/20 rounded-xl border border-pink-100 space-y-1.5 relative';
+                
+                let stars = '';
+                const ratingNum = r.rating || 5;
+                for (let i = 0; i < 5; i++) {
+                    stars += i < ratingNum ? '<i class="fa-solid fa-star text-amber-400"></i>' : '<i class="fa-solid fa-star text-gray-200"></i>';
+                }
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="font-medium text-xs text-gray-800">${r.author || 'ผู้ใช้งาน'}</span>
+                            <div class="text-[9px] space-x-0.5">${stars}</div>
+                        </div>
+                        <span class="text-[9px] text-gray-400">${r.date || ''}</span>
+                    </div>
+                    <p class="text-[11px] text-gray-600">${r.comment || ''}</p>
+                    ${r.image ? `<img src="${r.image}" class="w-20 h-20 object-cover rounded-lg border border-pink-200" onerror="this.style.display='none'">` : ''}
+                    ${isAdmin ? `<button onclick="deleteReview('${r.id}')" class="absolute bottom-2 right-2 text-rose-400 hover:text-rose-600 text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
+                `;
+                fragment.appendChild(card);
+            });
+            approvedContainer.appendChild(fragment);
+        }
+
+        // --- 6. ADMIN CONTROLS ---
+        function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
+        function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); }
+        
+        function hashSimpleStr(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash |= 0;
+            }
+            return hash;
+        }
+
+        function loginAdmin() {
+            const email = document.getElementById('adminEmail').value.trim().toLowerCase();
+            const pwd = document.getElementById('adminPassword').value;
+            
+            if (email.endsWith('@gmail.com') && (hashSimpleStr(email) === -1051523306 || email === 'admin@gmail.com') && (hashSimpleStr(pwd) === 1509442 || pwd === '1234')) {
+                isAdmin = true;
+                localStorage.setItem('pinkie_is_admin', 'true');
+                updateAdminUI();
+                renderReviews();
+                closeAdminModal();
+                document.getElementById('adminEmail').value = '';
+                document.getElementById('adminPassword').value = '';
+                alert('เข้าสู่ระบบผู้ดูแลระบบสำเร็จ!');
+            } else {
+                alert('อีเมล Gmail หรือรหัสผ่านไม่ถูกต้อง');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdmin = false;
+            localStorage.setItem('pinkie_is_admin', 'false');
+            updateAdminUI();
+            renderReviews();
+            alert('ออกจากระบบแอดมินเรียบร้อยแล้วค่ะ');
+        }
+
+        function updateAdminUI() {
+            const elements = [
+                { id: 'adminBanner', show: isAdmin },
+                { id: 'changeLogoBtn', show: isAdmin },
+                { id: 'editAboutBannerBtn', show: isAdmin },
+                { id: 'writeReviewBtn', show: !isAdmin }
+            ];
+            elements.forEach(item => {
+                const el = document.getElementById(item.id);
+                if (el) {
+                    if (item.show) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
